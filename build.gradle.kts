@@ -11,7 +11,8 @@ repositories {
 
 dependencies {
     testImplementation(kotlin("test"))
-    implementation("io.insert-koin:koin-core:4.0.4")
+    implementation("io.insert-koin:koin-core:4.0.2")
+    implementation ("com.opencsv:opencsv:5.6")
 }
 
 tasks.test {
