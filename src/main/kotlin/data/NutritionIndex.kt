@@ -1,4 +1,4 @@
-package org.example.model
+package org.example.data
 
 object NutritionIndex {
     const val CALORIES = 0

@@ -1,4 +1,4 @@
-package org.example.model
+package org.example.data
 
 object MealIndex {
     const val NAME = 0

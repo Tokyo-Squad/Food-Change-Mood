@@ -1,9 +1,8 @@
 package org.example.data
 
+import kotlinx.datetime.LocalDate
 import org.example.model.Meal
-import org.example.model.MealIndex
 import org.example.model.Nutrition
-import org.example.model.NutritionIndex
 
 class CsvMealParser {
 
@@ -27,7 +26,7 @@ class CsvMealParser {
                 id = line[MealIndex.ID].toInt(),
                 preparationTime = line[MealIndex.MINUTES].toInt(),
                 contributorId = line[MealIndex.CONTRIBUTOR_ID].toInt(),
-                submitted = line[MealIndex.SUBMITTED],
+                submitted = parseSubmittedDate(line[MealIndex.SUBMITTED]),
                 tags = parseStringList(line[MealIndex.TAGS]),
                 nutrition = nutrition,
                 numberOfSteps = line[MealIndex.N_STEPS].toInt(),
@@ -42,6 +41,13 @@ class CsvMealParser {
         }
     }
 
+    private fun parseSubmittedDate(rawDate: String): LocalDate =
+        rawDate.trim()
+            .split("/")
+            .map(String::toInt)
+            .let { (month, day, year) -> LocalDate(year, month, day)
+            }
+
     private fun parseStringList(raw: String): List<String> =
         raw.removeSurrounding("[", "]")
             .split(",")
@@ -55,8 +61,6 @@ class CsvMealParser {
 
     private fun cleanDescription(description: String?): String =
         description?.trim()
-            ?.replace(Regex("[*]+"), "")
-            ?.replace("\n", " ")
             ?.takeIf { it.isNotBlank() }
             ?: "No description available"
 }
