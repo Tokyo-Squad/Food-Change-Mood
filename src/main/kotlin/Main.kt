@@ -1,6 +1,6 @@
 package org.example
 
-import org.example.debendency.projectModule
+import dependencyinjection.projectModule
 import org.koin.core.context.GlobalContext.startKoin
 
 fun main() {
