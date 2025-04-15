@@ -11,7 +11,7 @@ import org.example.logic.EasyFoodSuggestionUseCase
 import org.koin.dsl.module
 
 val projectModule = module {
-    single { CsvMealReader("./food.csv") }
+    single { CsvMealReader("food.csv") }
 
     single { CsvMealParser() }
 
