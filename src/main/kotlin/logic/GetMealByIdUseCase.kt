@@ -5,7 +5,7 @@ import org.example.model.Meal
 class GetMealByIdUseCase(private val repo: CsvRepository) {
 
     operator fun invoke(id: Int): Result<Meal> {
-        val meal = repo.getMealById(id)
+        val meal = getMealById(id)
         return if (meal != null) {
             Result.success(meal) // Return success with the meal
         } else {
@@ -15,4 +15,8 @@ class GetMealByIdUseCase(private val repo: CsvRepository) {
 
     // Custom exception for meal not found
     class MealNotFoundException(message: String) : Exception(message)
+
+    private fun getMealById(id:Int): Meal? {
+        return repo.getMeals().find { it.id == id }
+    }
 }

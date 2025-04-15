@@ -14,7 +14,4 @@ class CsvRepositoryImpl(
             .mapNotNull(parser::parseLine)
             .toList()
     }
-
-    override fun getMealsByAddDate(date: LocalDate): List<Meal> = getMeals().filter { it.submitted == date }
-    override fun getMealById(id: Int): Meal? = getMeals().find { it.id == id }
 }
