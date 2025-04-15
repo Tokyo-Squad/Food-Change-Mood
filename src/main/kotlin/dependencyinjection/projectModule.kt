@@ -1,4 +1,4 @@
-package org.example.debendency
+package dependencyinjection
 
 import org.example.data.CsvMealParser
 import org.example.data.CsvMealReader
