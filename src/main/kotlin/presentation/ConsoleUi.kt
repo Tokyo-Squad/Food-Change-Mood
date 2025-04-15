@@ -23,13 +23,7 @@ fun getMealByIdConsole(getMealByIdUseCase: GetMealByIdUseCase) {
         val result = getMealByIdUseCase(idInput)
             .onSuccess {
                 it.let {
-                    println("Meal Details:")
-                    println("ID: ${it.id}")
-                    println("Name: ${it.name}")
-                    println("Preparation Time: ${it.preparationTime} minutes")
-                    println("Submitted: ${it.submitted}")
-                    println("Description: ${it.description ?: "No description available"}")
-                    println("Ingredients: ${it.ingredients.joinToString(", ")}")
+                    viewMoreDetailsAboutSpecificMeal(it)
                 }
             }
             .onFailure {
