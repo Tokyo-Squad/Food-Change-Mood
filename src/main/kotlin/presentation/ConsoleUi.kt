@@ -3,12 +3,38 @@ package org.example.presentation
 
 import org.example.logic.CsvRepository
 import org.example.logic.GetMealsByAddDateUseCase
+import org.example.logic.PlayIngredientGameUseCase
 import org.example.logic.HighCalorieMealSuggestionUseCase
 
-fun mealsByAddDateConsole(getMealsByAddDateUseCase: GetMealsByAddDateUseCase) {
+fun getMealsByDateConsole(getMealsByAddDateUseCase: GetMealsByAddDateUseCase) {
     println("Enter a date (yyyy-MM-dd) to search for meals:")
     val dateInput = readLine() ?: ""
+    val result = getMealsByAddDateUseCase(dateInput)
+    result.onSuccess {
+        println("Meals added on $dateInput:")
+        result.getOrNull()?.forEach { (id, name) -> println("ID: $id, Name: $name") }
+    }.onFailure {
+        println(result.exceptionOrNull()?.message)
+    }
+}
 
+fun playIngredientGame(gameUseCase: PlayIngredientGameUseCase) {
+    // Play the game
+    val result = gameUseCase.playGame { meal, options ->
+        println("Guess an ingredient in '${meal.name}':")
+
+        // Display the options to the user
+        options.forEachIndexed { i, option -> println("${i + 1}. $option") }
+
+        // Read the user's choice (e.g., via console input)
+        val choice = readlnOrNull()?.toIntOrNull()
+
+        // Return the selected ingredient, or null if the input is invalid
+        options.getOrNull((choice ?: 1) - 1) // Default to the first option if invalid
+    }
+
+    // Print the final game result
+    println("Game Over! Final Score: ${result.first}, Correct Answers: ${result.second}, Reason: ${result.third}")
     getMealsByAddDateUseCase(dateInput).onSuccess { meals ->
         println("\nMeals added on $dateInput:")
         meals.forEach { meal ->
