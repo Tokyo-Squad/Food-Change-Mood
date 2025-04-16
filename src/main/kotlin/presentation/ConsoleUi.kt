@@ -2,6 +2,7 @@ package org.example.presentation
 
 import org.example.logic.GetMealByIdUseCase
 import org.example.logic.GetMealsByAddDateUseCase
+import org.example.logic.PlayIngredientGameUseCase
 
 fun getMealsByDateConsole(getMealsByAddDateUseCase: GetMealsByAddDateUseCase) {
     println("Enter a date (yyyy-MM-dd) to search for meals:")
@@ -32,4 +33,23 @@ fun getMealByIdConsole(getMealByIdUseCase: GetMealByIdUseCase) {
     } else {
         println("Invalid input. Please enter a valid meal ID.")
     }
+}
+
+fun playIngredientGame(gameUseCase: PlayIngredientGameUseCase) {
+    // Play the game
+    val result = gameUseCase.playGame { meal, options ->
+        println("Guess an ingredient in '${meal.name}':")
+
+        // Display the options to the user
+        options.forEachIndexed { i, option -> println("${i + 1}. $option") }
+
+        // Read the user's choice (e.g., via console input)
+        val choice = readlnOrNull()?.toIntOrNull()
+
+        // Return the selected ingredient, or null if the input is invalid
+        options.getOrNull((choice ?: 1) - 1) // Default to the first option if invalid
+    }
+
+    // Print the final game result
+    println("Game Over! Final Score: ${result.first}, Correct Answers: ${result.second}, Reason: ${result.third}")
 }
