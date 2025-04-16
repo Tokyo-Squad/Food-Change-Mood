@@ -15,4 +15,5 @@ val useCaseModule = module {
     single { SweetMealWithoutEggUseCase(csvRepository = get()) }
 
     single { EasyFoodSuggestionUseCase(get()) }
+
 }
