@@ -2,7 +2,6 @@ package org.example.presentation
 
 import org.example.logic.GetMealByIdUseCase
 import org.example.logic.GetMealsByAddDateUseCase
-import org.example.logic.PlayIngredientGameUseCase
 
 fun getMealsByDateConsole(getMealsByAddDateUseCase: GetMealsByAddDateUseCase) {
     println("Enter a date (yyyy-MM-dd) to search for meals:")
