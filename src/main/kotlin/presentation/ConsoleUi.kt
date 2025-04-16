@@ -33,7 +33,7 @@ fun getMealByIdConsole(getMealByIdUseCase: GetMealByIdUseCase) {
     } else {
         println("Invalid input. Please enter a valid meal ID.")
     }
-
+}
 
 fun guessGame(
     getRandomMealUseCase: GetRandomMealUseCase
