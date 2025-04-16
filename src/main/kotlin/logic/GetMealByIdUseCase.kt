@@ -1,6 +1,7 @@
 package org.example.logic
 
 import org.example.model.Meal
+import org.example.utils.MealNotFoundException
 
 class GetMealByIdUseCase(private val repo: CsvRepository) {
 
@@ -13,8 +14,6 @@ class GetMealByIdUseCase(private val repo: CsvRepository) {
         }
     }
 
-    // Custom exception for meal not found
-    class MealNotFoundException(message: String) : Exception(message)
 
     private fun getMealById(id:Int): Meal? {
         return repo.getMeals().find { it.id == id }

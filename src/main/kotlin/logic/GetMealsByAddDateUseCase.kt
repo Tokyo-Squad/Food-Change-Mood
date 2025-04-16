@@ -2,6 +2,8 @@ package org.example.logic
 
 import kotlinx.datetime.LocalDate
 import org.example.model.Meal
+import org.example.utils.InvalidDateFormatException
+import org.example.utils.NoMealsFoundException
 
 class GetMealsByAddDateUseCase(
     private val repo: CsvRepository
@@ -20,12 +22,6 @@ class GetMealsByAddDateUseCase(
             Result.failure(InvalidDateFormatException("Invalid date format. Please use yyyy-MM-dd."))
         }
     }
-
-    // Custom exception for no meals found
-    class NoMealsFoundException(message: String) : Exception(message)
-
-    // Custom exception for invalid date format
-    class InvalidDateFormatException(message: String) : Exception(message)
 
     private fun getMealsByAddDate(date:LocalDate): List<Meal> {
         return repo.getMeals().filter { it.submitted == date }
