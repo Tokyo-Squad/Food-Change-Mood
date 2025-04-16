@@ -1,5 +1,7 @@
 package org.example.presentation
 
+import org.example.logic.CsvRepository
+import org.example.logic.GetLargeGroupItalyMealUseCase
 import org.example.logic.GetMealByIdUseCase
 import org.example.logic.GetMealsByAddDateUseCase
 
@@ -32,4 +34,13 @@ fun getMealByIdConsole(getMealByIdUseCase: GetMealByIdUseCase) {
     } else {
         println("Invalid input. Please enter a valid meal ID.")
     }
+}
+
+fun showItalyLargeGroupMeals(csvRepository : CsvRepository){
+    val largeGroupItalyMealUseCase = GetLargeGroupItalyMealUseCase(csvRepository)
+    val italianLargeGroupItalyMeal = largeGroupItalyMealUseCase.getLargeGroupItalyMeal()
+    italianLargeGroupItalyMeal.forEachIndexed { index, meal ->
+        println("${index+1} - $meal")
+    }
+
 }
