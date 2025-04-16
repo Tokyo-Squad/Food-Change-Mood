@@ -1,43 +1,36 @@
 package org.example.presentation
 
+
 import org.example.logic.CsvRepository
-import org.example.logic.GetMealByIdUseCase
 import org.example.logic.GetMealsByAddDateUseCase
 
-fun getMealsByDateConsole(getMealsByAddDateUseCase: GetMealsByAddDateUseCase) {
+fun mealsByAddDateConsole(getMealsByAddDateUseCase: GetMealsByAddDateUseCase) {
     println("Enter a date (yyyy-MM-dd) to search for meals:")
     val dateInput = readLine() ?: ""
-    val result = getMealsByAddDateUseCase(dateInput)
-    result.onSuccess {
-        println("Meals added on $dateInput:")
-        result.getOrNull()?.forEach { (id, name) -> println("ID: $id, Name: $name") }
-    }.onFailure {
-        println(result.exceptionOrNull()?.message)
-    }
+
+    getMealsByAddDateUseCase(dateInput).onSuccess { meals ->
+            println("\nMeals added on $dateInput:")
+            meals.forEach { meal ->
+                println("ID: ${meal.id}, Name: ${meal.name}")
+            }
+
+            val mealsMap = meals.associateBy { it.id }
+
+            println("\nEnter a meal ID to view more details (or press Enter to exit):")
+            val selectedId = readLine()?.toIntOrNull()
+            mealsMap[selectedId]?.let { selectedMeal ->
+                viewMoreDetailsAboutSpecificMeal(selectedMeal)
+            } ?: println("Meal with ID $selectedId not found in the current list.")
+
+        }.onFailure {
+            println(it.message)
+        }
+
 }
 
-fun getMealByIdConsole(getMealByIdUseCase: GetMealByIdUseCase) {
-    println("Enter a meal ID to retrieve details:")
-    val idInput = readLine()?.toIntOrNull()
-
-    if (idInput != null) {
-        val result = getMealByIdUseCase(idInput)
-            .onSuccess {
-                it.let {
-                    viewMoreDetailsAboutSpecificMeal(it)
-                }
-            }
-            .onFailure {
-                println(it.message)
-            }
-    } else {
-        println("Invalid input. Please enter a valid meal ID.")
-    }
-}
 
 fun guessGame(
-    attempts:Int = 3,
-    repo : CsvRepository
+    attempts: Int = 3, repo: CsvRepository
 ) {
 
     val randomMeal = repo.getMeals().random()
@@ -61,9 +54,11 @@ fun guessGame(
             guessedTime < correctTime -> {
                 println("Too low! Try again.")
             }
+
             guessedTime > correctTime -> {
                 println("Too high! Try again.")
             }
+
             else -> {
                 println("Congratulations! You guessed the correct time: $correctTime minutes.")
                 return // Exit the function if the guess is correct
@@ -73,6 +68,6 @@ fun guessGame(
         remainingAttempts--
     }
 
-    // If the user runs out of attempts
-    println("Sorry! You've used all your attempts. The correct preparation time was: $correctTime minutes.")
 }
+
+
