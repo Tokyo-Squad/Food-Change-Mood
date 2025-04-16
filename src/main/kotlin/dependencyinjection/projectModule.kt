@@ -16,13 +16,4 @@ val projectModule = module {
     single { CsvMealParser() }
 
     single<CsvRepository> { CsvRepositoryImpl(get(), get()) }
-
-    single { GetMealsByAddDateUseCase(get()) }
-    
-    single { GetMealByIdUseCase(get()) }
-
-    single { SweetMealWithoutEggUseCase(csvRepository = get()) }
-    
-    single { EasyFoodSuggestionUseCase(get()) }
-
 }
