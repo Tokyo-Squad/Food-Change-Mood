@@ -26,6 +26,15 @@ private fun String.containsAny(keywords: List<String>, ignoreCase: Boolean): Boo
         else this.contains(keyword)
     }
 }
+
+/**
+ * Returns a specified number of random elements from the list without repetition.
+ * This method is optimized for cases where only a small subset of elements is needed
+ * from a potentially large list.
+ *
+ * @param count The number of random elements to return
+ * @return A list containing random elements from the original list
+ */
 fun <T> List<T>.randomElementsUnique(count: Int): List<T> {
     // If requested count is larger than list size, return the entire list
     if (this.size < count) return this
