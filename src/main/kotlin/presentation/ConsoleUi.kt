@@ -2,6 +2,7 @@ package org.example.presentation
 
 import org.example.logic.GetMealByIdUseCase
 import org.example.logic.GetMealsByAddDateUseCase
+import org.example.logic.HighCalorieMealSuggestionUseCase
 
 fun getMealsByDateConsole(getMealsByAddDateUseCase: GetMealsByAddDateUseCase) {
     println("Enter a date (yyyy-MM-dd) to search for meals:")
@@ -31,5 +32,30 @@ fun getMealByIdConsole(getMealByIdUseCase: GetMealByIdUseCase) {
             }
     } else {
         println("Invalid input. Please enter a valid meal ID.")
+    }
+}
+
+fun getHighCalorieMealSuggestionConsole(highCalorieMealSuggestionUseCase: HighCalorieMealSuggestionUseCase) {
+    val suggestion = highCalorieMealSuggestionUseCase.getNextSuggestion()
+    if (suggestion == null) {
+        println("No more high-calorie meals available to suggest.")
+        return
+    }
+    println("High-Calorie Meal Suggestion: ${suggestion.name}")
+    println("Enter 'yes' to view details, 'no' for another suggestion")
+
+    when(readLine()?.trim()?.lowercase()) {
+        "yes", "y" -> {
+            println("Meal Details:")
+            println("Name       : ${suggestion.name}")
+            println("Description: ${suggestion.description}")
+            println("Calories   : ${suggestion.nutrition.calories}")
+        }
+        "no", "n" -> {
+            getHighCalorieMealSuggestionConsole(highCalorieMealSuggestionUseCase)
+        }
+        else -> {
+            println("Invalid input.")
+        }
     }
 }
