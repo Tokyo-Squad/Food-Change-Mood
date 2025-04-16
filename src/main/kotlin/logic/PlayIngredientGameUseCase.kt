@@ -9,9 +9,6 @@ class PlayIngredientGameUseCase(
     companion object {
         const val WRONG_ANSWERS = 2
     }
-    class PlayIngredientGameUseCase(
-        private val repository: CsvRepository
-    ) {
         fun playGame(
             initialScore: Int = 0,
             maxCorrectAnswers: Int = 15,
@@ -60,4 +57,3 @@ class PlayIngredientGameUseCase(
             return Triple(score, correctCount, message)
         }
     }
-}
