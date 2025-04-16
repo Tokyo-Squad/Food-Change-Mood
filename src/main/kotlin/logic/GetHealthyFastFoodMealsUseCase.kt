@@ -13,6 +13,15 @@ class GetHealthyFastFoodMealsUseCase(
         val avgSaturatedFat = allMeals.map { it.nutrition.saturatedFat }.average()
         val avgCarbs = allMeals.map { it.nutrition.carbohydrates }.average()
 
+        return filterHealthyFastMeals(allMeals, avgTotalFat, avgSaturatedFat, avgCarbs)
+
+    }
+    private fun filterHealthyFastMeals(
+        allMeals: List<Meal>,
+        avgTotalFat: Double,
+        avgSaturatedFat: Double,
+        avgCarbs: Double
+    ): List<Meal> {
         return allMeals
             .asSequence()
             .filter { meal ->
