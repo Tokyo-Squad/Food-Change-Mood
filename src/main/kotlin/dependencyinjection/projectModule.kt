@@ -6,6 +6,7 @@ import org.example.data.CsvRepositoryImpl
 import org.example.logic.CsvRepository
 import org.example.logic.SweetMealWithoutEggUseCase
 import org.example.logic.EasyFoodSuggestionUseCase
+import org.example.logic.GetRandomMealUseCase
 import org.koin.dsl.module
 
 val projectModule = module {
@@ -18,4 +19,6 @@ val projectModule = module {
     single { SweetMealWithoutEggUseCase(csvRepository = get()) }
     
   single { EasyFoodSuggestionUseCase(get()) }
+
+    single { GetRandomMealUseCase(get()) }
 }
