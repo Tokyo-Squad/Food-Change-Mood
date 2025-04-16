@@ -1,8 +1,8 @@
 package org.example.presentation
 
+import org.example.logic.CsvRepository
 import org.example.logic.GetMealByIdUseCase
 import org.example.logic.GetMealsByAddDateUseCase
-import org.example.logic.GetRandomMealUseCase
 
 fun getMealsByDateConsole(getMealsByAddDateUseCase: GetMealsByAddDateUseCase) {
     println("Enter a date (yyyy-MM-dd) to search for meals:")
@@ -36,10 +36,11 @@ fun getMealByIdConsole(getMealByIdUseCase: GetMealByIdUseCase) {
 }
 
 fun guessGame(
-    getRandomMealUseCase: GetRandomMealUseCase
+    attempts:Int = 3,
+    repo : CsvRepository
 ) {
-    val attempts = 3
-    val randomMeal = getRandomMealUseCase()
+
+    val randomMeal = repo.getMeals().random()
     val correctTime = randomMeal.preparationTime
     var remainingAttempts = attempts
 
