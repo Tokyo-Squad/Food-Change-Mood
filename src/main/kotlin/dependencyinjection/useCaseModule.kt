@@ -6,7 +6,7 @@ import org.koin.dsl.module
 import org.example.logic.EasyFoodSuggestionUseCase
 import org.example.logic.GetMealsByAddDateUseCase
 import org.example.logic.SweetMealWithoutEggUseCase
-
+import org.example.logic.HighCalorieMealSuggestionUseCase
 
 val useCaseModule = module {
     single { GetHealthyFastFoodMealsUseCase(get<CsvRepository>()) }
@@ -16,4 +16,5 @@ val useCaseModule = module {
 
     single { EasyFoodSuggestionUseCase(get()) }
 
+    single { HighCalorieMealSuggestionUseCase(get()) }
 }
