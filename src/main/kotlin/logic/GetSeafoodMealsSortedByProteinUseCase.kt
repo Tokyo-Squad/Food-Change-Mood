@@ -10,13 +10,7 @@ class GetSeafoodMealsSortedByProteinUseCase {
 
     operator fun invoke(meals: List<Meal>): List<Pair<Int, Meal>> {
         val seafoodMeals = meals
-            // Filter meals where the description contains "seafood" (case-insensitive)
-            // or any tag contains "seafood" (case-insensitive)
-            .filter { meal ->
-                meal.description?.contains("seafood", ignoreCase = true) == true ||
-                        meal.tags.any { tag -> tag.contains("seafood", ignoreCase = true) }
-            }
-            // Sort the filtered meals in descending order of protein content
+            .filter(::isSeafoodMeal)
             .sortedByDescending { meal -> meal.nutrition.protein }
 
         // Map the sorted list to a pair of (index, meal), starting index count from 1
@@ -24,4 +18,9 @@ class GetSeafoodMealsSortedByProteinUseCase {
             Pair(index + 1, meal)
         }
     }
+
+    private fun isSeafoodMeal(meal: Meal): Boolean =
+        meal.description?.contains("seafood", ignoreCase = true) == true ||
+                meal.tags.any { tag -> tag.contains("seafood", ignoreCase = true) }
+
 }
