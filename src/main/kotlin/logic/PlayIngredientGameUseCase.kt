@@ -21,27 +21,38 @@ class PlayIngredientGameUseCase(
         while (correctCount < MAX_CORRECT_ANSWERS) {
             val meal = meals.random()
             val correctIngredient = meal.ingredients.random()
+            val wrongIngredients = getWrongIngredients(meals, meal, correctIngredient)
 
-            // Combined filter to exclude current meal and correct ingredient
-            val wrongIngredients = meals.asSequence().flatMap { otherMeal ->
-                otherMeal.ingredients.asSequence().filter { otherMeal.id != meal.id && it != correctIngredient }
-            }.distinct().toList().randomElementsUnique(2)
-
-            // Ensure we always get two wrong ingredients
             if (wrongIngredients.size < 2) continue
 
-            // Shuffle the options to include both correct and wrong ingredients
-            val options = (wrongIngredients + correctIngredient)
-            val userAnswer = promptUser(meal, options) // Get the user's answer
+            val options = prepareOptions(correctIngredient, wrongIngredients)
+            val userAnswer = promptUser(meal, options)
 
             if (userAnswer == correctIngredient) {
                 score += POINTS_PER_CORRECT
                 correctCount++
             } else {
-                return Triple(score, correctCount, "Wrong answer. Correct was '$correctIngredient'")
+                return endGame(score, correctCount, "Wrong answer. Correct was '$correctIngredient'")
             }
         }
 
-        return Triple(score, correctCount, "the Max correct answers reached")
+        return endGame(score, correctCount, "the Max correct answers reached")
+    }
+
+    private fun getWrongIngredients(meals: List<Meal>, currentMeal: Meal, correct: String): List<String> {
+        return meals.asSequence()
+            .flatMap { it.ingredients.asSequence() }
+            .filter { it != correct && it !in currentMeal.ingredients }
+            .distinct()
+            .toList()
+            .randomElementsUnique(2)
+    }
+
+    private fun prepareOptions(correct: String, wrong: List<String>): List<String> {
+        return (wrong + correct).shuffled()
+    }
+
+    private fun endGame(score: Int, correctCount: Int, message: String): Triple<Int, Int, String> {
+        return Triple(score, correctCount, message)
     }
 }

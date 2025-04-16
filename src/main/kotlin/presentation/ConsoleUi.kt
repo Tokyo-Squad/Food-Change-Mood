@@ -1,7 +1,7 @@
 package org.example.presentation
 
-import org.example.logic.GetMealByIdUseCase
 import org.example.logic.GetMealsByAddDateUseCase
+import org.example.logic.PlayIngredientGameUseCase
 
 fun getMealsByDateConsole(getMealsByAddDateUseCase: GetMealsByAddDateUseCase) {
     println("Enter a date (yyyy-MM-dd) to search for meals:")
@@ -12,25 +12,6 @@ fun getMealsByDateConsole(getMealsByAddDateUseCase: GetMealsByAddDateUseCase) {
         result.getOrNull()?.forEach { (id, name) -> println("ID: $id, Name: $name") }
     }.onFailure {
         println(result.exceptionOrNull()?.message)
-    }
-}
-
-fun getMealByIdConsole(getMealByIdUseCase: GetMealByIdUseCase) {
-    println("Enter a meal ID to retrieve details:")
-    val idInput = readLine()?.toIntOrNull()
-
-    if (idInput != null) {
-        val result = getMealByIdUseCase(idInput)
-            .onSuccess {
-                it.let {
-                    viewMoreDetailsAboutSpecificMeal(it)
-                }
-            }
-            .onFailure {
-                println(it.message)
-            }
-    } else {
-        println("Invalid input. Please enter a valid meal ID.")
     }
 }
 
