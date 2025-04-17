@@ -2,18 +2,13 @@ package org.example.presentation
 
 import org.example.logic.CsvRepository
 import org.example.logic.GetLargeGroupItalyMealUseCase
-import org.example.logic.GetMealByIdUseCase
 import org.example.logic.GetMealsByAddDateUseCase
 import org.example.logic.PlayIngredientGameUseCase
 import org.example.logic.HighCalorieMealSuggestionUseCase
 import org.example.logic.GetIraqiMealsUseCase
-import org.example.logic.GetMealByIdUseCase
-import org.example.logic.GetMealsByAddDateUseCase
-import org.example.logic.GetMealByIdUseCase
-import org.example.logic.GetMealsByAddDateUseCase
 import org.example.logic.GymHelperUseCase
-
 import org.example.logic.*
+import org.koin.mp.KoinPlatform.getKoin
 
 
 fun getMealsByDateConsole(getMealsByAddDateUseCase: GetMealsByAddDateUseCase) {
@@ -138,8 +133,9 @@ fun getHighCalorieMealSuggestionConsole(highCalorieMealSuggestionUseCase: HighCa
     }
 }
 
-fun showItalyLargeGroupMeals(csvRepository : CsvRepository) {
-    val largeGroupItalyMealUseCase = GetLargeGroupItalyMealUseCase(csvRepository)
+fun showItalyLargeGroupMeals() {
+
+    val largeGroupItalyMealUseCase: GetLargeGroupItalyMealUseCase = getKoin().get<GetLargeGroupItalyMealUseCase>()
     val italianLargeGroupItalyMeal = largeGroupItalyMealUseCase.invoke()
     italianLargeGroupItalyMeal.forEachIndexed { index, meal ->
         println("${index + 1} - $meal")
@@ -161,11 +157,13 @@ fun getHealthyFastFoodMealsConsole(useCase: GetHealthyFastFoodMealsUseCase) {
     }
 }
 
-fun getIraqiMeals(iraqiMealUeCase: GetIraqiMealsUseCase ){
+fun getIraqiMeals(iraqiMealUeCase: GetIraqiMealsUseCase ) {
     println("All Iraqi meal")
-    iraqiMealUeCase.invoke().forEachIndexed{ index, meal ->
+    iraqiMealUeCase.invoke().forEachIndexed { index, meal ->
         println(" ${index + 1} : $meal")
     }
+}
+
 fun getGymHelper(gymHelper: GymHelperUseCase){
     print("please enter your target calories: ")
     val targetCalories = readln().toFloatOrNull()
