@@ -1,10 +1,11 @@
 package org.example
 
-import org.example.debendency.projectModule
+import dependencyinjection.projectModule
 import org.koin.core.context.GlobalContext.startKoin
+import org.example.dependencyinjection.useCaseModule
 
 fun main() {
     startKoin {
-        modules(projectModule)
+        modules(projectModule,useCaseModule)
     }
 }
