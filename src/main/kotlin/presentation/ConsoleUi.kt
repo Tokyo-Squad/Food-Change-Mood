@@ -1,5 +1,6 @@
 package org.example.presentation
 
+import org.example.logic.GetIraqiMealsUseCase
 import org.example.logic.GetMealByIdUseCase
 import org.example.logic.GetMealsByAddDateUseCase
 
@@ -32,4 +33,12 @@ fun getMealByIdConsole(getMealByIdUseCase: GetMealByIdUseCase) {
     } else {
         println("Invalid input. Please enter a valid meal ID.")
     }
+}
+
+fun getIraqiMeals(iraqiMealUeCase: GetIraqiMealsUseCase ){
+    println("All Iraqi meal")
+    iraqiMealUeCase.invoke().forEachIndexed{ index, meal ->
+        println(" ${index + 1} : $meal")
+    }
+
 }
