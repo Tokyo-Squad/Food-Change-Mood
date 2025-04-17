@@ -8,18 +8,15 @@ class GetLargeGroupItalyMealUseCase(
 ) {
 
     fun invoke(): List<Meal> {
-        return getItalyMeals().filter { it.tags.contains("for-large-groups") }
-
+        return csvRepository.getMeals()
+            .filter(::isItalianMeal)
+            .filter(::isSuitableForLargeGroups)
     }
 
-    private fun getItalyMeals(): List<Meal> = getAllMeals()
-        .filter {
-            it.containAnyOf("italy") ||
-                    it.containAnyOf("italian")
-        }
+    private fun isItalianMeal(meal: Meal): Boolean =
+        meal.containAnyOf("italy") || meal.containAnyOf("italian")
 
-
-    private fun getAllMeals(): List<Meal> = csvRepository.getMeals()
-
+    private fun isSuitableForLargeGroups(meal: Meal): Boolean =
+        meal.tags.contains("for-large-groups")
 
 }
