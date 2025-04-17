@@ -4,7 +4,7 @@ import org.example.model.Meal
 
 class KetoDietMealHelperUseCase(
     private val csvRepository: CsvRepository,
-    ): CalculatePercentage{
+    ): CalculatePercentage, DisLikeProvider{
 
     private val disLikedFood = mutableSetOf<Meal>()
 
@@ -41,7 +41,7 @@ class KetoDietMealHelperUseCase(
         return (firstValue / secondValue) * 100
     }
 
-    fun disLike(meal: Meal){
+    override fun dislike(meal: Meal){
         disLikedFood.add(meal)
     }
 }
