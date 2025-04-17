@@ -157,6 +157,39 @@ fun getHealthyFastFoodMealsConsole(useCase: GetHealthyFastFoodMealsUseCase) {
     }
 }
 
+
+fun getKetoDietHelper(){
+    val ketoDietMealHelperUseCase : KetoDietMealHelperUseCase = getKoin().get<KetoDietMealHelperUseCase>()
+    while (true) {
+        val randomMeal = ketoDietMealHelperUseCase.getRandomFriendlyMeal()
+
+        println("Random Keto Diet: $randomMeal")
+        println(
+            """
+            1- Like (continue)
+            2- Dislike (show another keto diet)
+            3- Exit
+            """.trimIndent()
+        )
+
+        when (readLine()) {
+            "1" -> {
+                println("Meal liked! Continuing...")
+                return
+            }
+            "2" -> {
+                ketoDietMealHelperUseCase.dislike(randomMeal)
+                println("Meal disliked. Fetching another suggestion...")
+            }
+            "3" -> {
+                println("Exiting...")
+                return
+            }
+            else -> println("Please enter a valid option (1, 2, or 3)")
+        }
+    }
+}
+
 fun getIraqiMeals(iraqiMealUeCase: GetIraqiMealsUseCase) {
     println("All Iraqi meal")
     iraqiMealUeCase.invoke().forEachIndexed { index, meal ->
