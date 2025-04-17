@@ -2,6 +2,7 @@ package org.example.presentation
 
 
 import org.example.logic.*
+import org.koin.mp.KoinPlatform.getKoin
 
 fun getMealsByDateConsole(getMealsByAddDateUseCase: GetMealsByAddDateUseCase) {
     println("Enter a date (yyyy-MM-dd) to search for meals:")
@@ -135,6 +136,38 @@ fun getHealthyFastFoodMealsConsole(useCase: GetHealthyFastFoodMealsUseCase) {
         println("Healthy Fast Food Meals:")
         result.forEach { meal ->
             println("ID: ${meal.id}, Name: ${meal.name}, Time: ${meal.preparationTime} mins")
+        }
+    }
+}
+
+fun getKetoDietHelper(){
+    val ketoDietMealHelperUseCase : KetoDietMealHelperUseCase = getKoin().get<KetoDietMealHelperUseCase>()
+    while (true) {
+        val randomMeal = ketoDietMealHelperUseCase.getRandomFriendlyMeal()
+
+        println("Random Keto Diet: $randomMeal")
+        println(
+            """
+            1- Like (continue)
+            2- Dislike (show another keto diet)
+            3- Exit
+            """.trimIndent()
+        )
+
+        when (readLine()) {
+            "1" -> {
+                println("Meal liked! Continuing...")
+                return
+            }
+            "2" -> {
+                ketoDietMealHelperUseCase.dislike(randomMeal)
+                println("Meal disliked. Fetching another suggestion...")
+            }
+            "3" -> {
+                println("Exiting...")
+                return
+            }
+            else -> println("Please enter a valid option (1, 2, or 3)")
         }
     }
 }
