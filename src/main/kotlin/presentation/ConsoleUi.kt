@@ -1,6 +1,14 @@
 package org.example.presentation
 
+import org.example.logic.CsvRepository
+import org.example.logic.GetLargeGroupItalyMealUseCase
+import org.example.logic.GetMealsByAddDateUseCase
+import org.example.logic.PlayIngredientGameUseCase
+import org.example.logic.HighCalorieMealSuggestionUseCase
+import org.example.logic.GetIraqiMealsUseCase
+import org.example.logic.GymHelperUseCase
 import org.example.logic.*
+import org.koin.mp.KoinPlatform.getKoin
 
 
 fun getMealsByDateConsole(getMealsByAddDateUseCase: GetMealsByAddDateUseCase) {
@@ -122,6 +130,15 @@ fun getHighCalorieMealSuggestionConsole(highCalorieMealSuggestionUseCase: HighCa
         else -> {
             println("Invalid input.")
         }
+    }
+}
+
+fun showItalyLargeGroupMeals() {
+
+    val largeGroupItalyMealUseCase: GetLargeGroupItalyMealUseCase = getKoin().get<GetLargeGroupItalyMealUseCase>()
+    val italianLargeGroupItalyMeal = largeGroupItalyMealUseCase.invoke()
+    italianLargeGroupItalyMeal.forEachIndexed { index, meal ->
+        println("${index + 1} - $meal")
     }
 }
 
