@@ -1,9 +1,13 @@
 package org.example.presentation
 
+import org.example.logic.GetIraqiMealsUseCase
+import org.example.logic.GetMealByIdUseCase
+import org.example.logic.GetMealsByAddDateUseCase
 import org.example.logic.GetMealByIdUseCase
 import org.example.logic.GetMealsByAddDateUseCase
 import org.example.logic.GymHelperUseCase
 import org.example.logic.*
+
 
 fun getMealsByDateConsole(getMealsByAddDateUseCase: GetMealsByAddDateUseCase) {
     println("Enter a date (yyyy-MM-dd) to search for meals:")
@@ -141,6 +145,11 @@ fun getHealthyFastFoodMealsConsole(useCase: GetHealthyFastFoodMealsUseCase) {
     }
 }
 
+fun getIraqiMeals(iraqiMealUeCase: GetIraqiMealsUseCase ){
+    println("All Iraqi meal")
+    iraqiMealUeCase.invoke().forEachIndexed{ index, meal ->
+        println(" ${index + 1} : $meal")
+    }
 fun getGymHelper(gymHelper: GymHelperUseCase){
     print("please enter your target calories: ")
     val targetCalories = readln().toFloatOrNull()
