@@ -7,7 +7,7 @@ class GetLargeGroupItalyMealUseCase(
     private val csvRepository: CsvRepository
 ) {
 
-    fun getLargeGroupItalyMeal(): List<Meal> {
+    fun invoke(): List<Meal> {
         return getItalyMeals().filter { it.tags.contains("for-large-groups") }
 
     }
