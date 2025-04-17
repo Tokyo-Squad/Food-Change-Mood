@@ -7,6 +7,7 @@ import org.example.logic.CsvRepository
 import org.example.logic.GetMealsByAddDateUseCase
 import org.example.logic.PlayIngredientGameUseCase
 import org.example.logic.HighCalorieMealSuggestionUseCase
+import org.example.logic.*
 
 fun getMealsByDateConsole(getMealsByAddDateUseCase: GetMealsByAddDateUseCase) {
     println("Enter a date (yyyy-MM-dd) to search for meals:")
@@ -37,6 +38,12 @@ fun playIngredientGame(gameUseCase: PlayIngredientGameUseCase) {
 
     // Print the final game result
     println("Game Over! Final Score: ${result.first}, Correct Answers: ${result.second}, Reason: ${result.third}")
+
+}
+fun mealsByAddDateConsole(getMealsByAddDateUseCase: GetMealsByAddDateUseCase) {
+    println("Enter a date (yyyy-MM-dd) to search for meals:")
+    val dateInput = readLine() ?: ""
+
     getMealsByAddDateUseCase(dateInput).onSuccess { meals ->
         println("\nMeals added on $dateInput:")
         meals.forEach { meal ->
@@ -50,11 +57,13 @@ fun playIngredientGame(gameUseCase: PlayIngredientGameUseCase) {
         mealsMap[selectedId]?.let { selectedMeal ->
             viewMoreDetailsAboutSpecificMeal(selectedMeal)
         } ?: println("Meal with ID $selectedId not found in the current list.")
+
     }.onFailure {
         println(it.message)
     }
 
 }
+
 
 fun guessGame(
     attempts: Int = 3, repo: CsvRepository
@@ -129,4 +138,17 @@ fun showItalyLargeGroupMeals(csvRepository : CsvRepository){
         println("${index+1} - $meal")
     }
 
+fun getHealthyFastFoodMealsConsole(useCase: GetHealthyFastFoodMealsUseCase) {
+    println("Fetching healthy fast food meals (under 15 mins, low fat/carbs)...")
+
+    val result = useCase.getHealthyFastFoodMeals()
+
+    if (result.isEmpty()) {
+        println("No healthy fast food meals found.")
+    } else {
+        println("Healthy Fast Food Meals:")
+        result.forEach { meal ->
+            println("ID: ${meal.id}, Name: ${meal.name}, Time: ${meal.preparationTime} mins")
+        }
+    }
 }
