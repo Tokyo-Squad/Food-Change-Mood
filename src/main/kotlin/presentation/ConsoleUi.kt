@@ -3,7 +3,6 @@ package org.example.presentation
 import org.example.logic.CsvRepository
 import org.example.logic.GetLargeGroupItalyMealUseCase
 import org.example.logic.GetMealByIdUseCase
-import org.example.logic.CsvRepository
 import org.example.logic.GetMealsByAddDateUseCase
 import org.example.logic.PlayIngredientGameUseCase
 import org.example.logic.HighCalorieMealSuggestionUseCase
@@ -131,12 +130,13 @@ fun getHighCalorieMealSuggestionConsole(highCalorieMealSuggestionUseCase: HighCa
     }
 }
 
-fun showItalyLargeGroupMeals(csvRepository : CsvRepository){
+fun showItalyLargeGroupMeals(csvRepository : CsvRepository) {
     val largeGroupItalyMealUseCase = GetLargeGroupItalyMealUseCase(csvRepository)
-    val italianLargeGroupItalyMeal = largeGroupItalyMealUseCase.getLargeGroupItalyMeal()
+    val italianLargeGroupItalyMeal = largeGroupItalyMealUseCase.invoke()
     italianLargeGroupItalyMeal.forEachIndexed { index, meal ->
-        println("${index+1} - $meal")
+        println("${index + 1} - $meal")
     }
+}
 
 fun getHealthyFastFoodMealsConsole(useCase: GetHealthyFastFoodMealsUseCase) {
     println("Fetching healthy fast food meals (under 15 mins, low fat/carbs)...")
