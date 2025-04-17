@@ -1,6 +1,7 @@
 package org.example.utils
 
 import org.example.model.Meal
+import kotlin.random.Random
 
 fun Meal.containAnyOf(types: List<String>): Boolean {
 
@@ -24,4 +25,34 @@ private fun String.containsAny(keywords: List<String>, ignoreCase: Boolean): Boo
         if (ignoreCase) this.contains(keyword, ignoreCase = true)
         else this.contains(keyword)
     }
+}
+
+/**
+ * Returns a specified number of random elements from the list without repetition.
+ * This method is optimized for cases where only a small subset of elements is needed
+ * from a potentially large list.
+ *
+ * @param count The number of random elements to return
+ * @return A list containing random elements from the original list
+ */
+fun <T> List<T>.randomElementsUnique(count: Int): List<T> {
+    // If requested count is larger than list size, return the entire list
+    if (this.size < count) return this
+
+    val random = Random(System.currentTimeMillis())
+    val uniqueIndices = mutableSetOf<Int>()
+
+    // Generate unique random indices
+    while (uniqueIndices.size < count) {
+        val index = random.nextInt(this.size)
+        uniqueIndices.add(index)
+    }
+
+    // Build result list from the unique indices
+    val result = ArrayList<T>(count)
+    for (index in uniqueIndices) {
+        result.add(this[index])
+    }
+
+    return result
 }
