@@ -4,7 +4,7 @@ import org.example.model.Meal
 
 class KetoDietMealHelperUseCase(
     private val csvRepository: CsvRepository,
-    ){
+    ): CalculatePercentage{
 
     private val disLikedFood = mutableSetOf<Meal>()
 
@@ -37,7 +37,7 @@ class KetoDietMealHelperUseCase(
 
     }
 
-    private fun calculatePercentage(firstValue: Double, secondValue: Double): Double {
+    override fun calculatePercentage(firstValue: Double, secondValue: Double): Double {
         return (firstValue / secondValue) * 100
     }
 
