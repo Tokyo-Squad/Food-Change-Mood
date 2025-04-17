@@ -42,11 +42,7 @@ class CsvMealParser {
     }
 
     private fun parseSubmittedDate(rawDate: String): LocalDate =
-        rawDate.trim()
-            .split("/")
-            .map(String::toInt)
-            .let { (month, day, year) -> LocalDate(year, month, day)
-            }
+        LocalDate.parse(rawDate.trim())
 
     private fun parseStringList(raw: String): List<String> =
         raw.removeSurrounding("[", "]")
