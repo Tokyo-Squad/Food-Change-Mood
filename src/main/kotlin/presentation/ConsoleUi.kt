@@ -3,6 +3,9 @@ package org.example.presentation
 import org.example.logic.GetIraqiMealsUseCase
 import org.example.logic.GetMealByIdUseCase
 import org.example.logic.GetMealsByAddDateUseCase
+import org.example.logic.GetMealByIdUseCase
+import org.example.logic.GetMealsByAddDateUseCase
+import org.example.logic.GymHelperUseCase
 import org.example.logic.*
 
 
@@ -147,5 +150,18 @@ fun getIraqiMeals(iraqiMealUeCase: GetIraqiMealsUseCase ){
     iraqiMealUeCase.invoke().forEachIndexed{ index, meal ->
         println(" ${index + 1} : $meal")
     }
+fun getGymHelper(gymHelper: GymHelperUseCase){
+    print("please enter your target calories: ")
+    val targetCalories = readln().toFloatOrNull()
+    print("please enter your target calories: ")
+    val targetProtein = readln().toFloatOrNull()
+
+    if(targetCalories != null && targetProtein != null ){
+        gymHelper.invoke(targetCalories = targetCalories, targetProtein = targetProtein).forEachIndexed { index, meal ->
+            println("${index + 1} - $meal")
+        }
+    }
+    else
+        throw NullPointerException("please enter correct value")
 
 }
