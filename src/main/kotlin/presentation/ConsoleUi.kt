@@ -37,11 +37,11 @@ fun playIngredientGame(gameUseCase: PlayIngredientGameUseCase) {
         // Return the selected ingredient, or null if the input is invalid
         options.getOrNull((choice ?: 1) - 1) // Default to the first option if invalid
     }
-
     // Print the final game result
     println("Game Over! Final Score: ${result.first}, Correct Answers: ${result.second}, Reason: ${result.third}")
 
 }
+
 fun mealsByAddDateConsole(getMealsByAddDateUseCase: GetMealsByAddDateUseCase) {
     println("Enter a date (yyyy-MM-dd) to search for meals:")
     val dateInput = readLine() ?: ""
@@ -157,25 +157,24 @@ fun getHealthyFastFoodMealsConsole(useCase: GetHealthyFastFoodMealsUseCase) {
     }
 }
 
-fun getIraqiMeals(iraqiMealUeCase: GetIraqiMealsUseCase ) {
+fun getIraqiMeals(iraqiMealUeCase: GetIraqiMealsUseCase) {
     println("All Iraqi meal")
     iraqiMealUeCase.invoke().forEachIndexed { index, meal ->
         println(" ${index + 1} : $meal")
     }
 }
 
-fun getGymHelper(gymHelper: GymHelperUseCase){
+fun getGymHelper(gymHelper: GymHelperUseCase) {
     print("please enter your target calories: ")
     val targetCalories = readln().toFloatOrNull()
     print("please enter your target calories: ")
     val targetProtein = readln().toFloatOrNull()
 
-    if(targetCalories != null && targetProtein != null ){
+    if (targetCalories != null && targetProtein != null) {
         gymHelper.invoke(targetCalories = targetCalories, targetProtein = targetProtein).forEachIndexed { index, meal ->
             println("${index + 1} - $meal")
         }
-    }
-    else
+    } else
         throw NullPointerException("please enter correct value")
 
 }
