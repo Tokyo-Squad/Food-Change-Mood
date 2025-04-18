@@ -144,7 +144,7 @@ fun getHealthyFastFoodMealsConsole(useCase: GetHealthyFastFoodMealsUseCase) {
 
 fun getKetoDietHelper(ketoDietMealHelperUseCase: KetoDietMealHelperUseCase) {
     while (true) {
-        val randomMeal = ketoDietMealHelperUseCase.getRandomFriendlyMeal()
+        val randomMeal = ketoDietMealHelperUseCase()
 
         println("Random Keto Diet:\n")
         viewMoreDetailsAboutSpecificMeal(randomMeal)
@@ -159,6 +159,7 @@ fun getKetoDietHelper(ketoDietMealHelperUseCase: KetoDietMealHelperUseCase) {
         when (readLine()) {
             "1" -> {
                 println("Meal liked! Continuing...")
+                ketoDietMealHelperUseCase.like(meal = randomMeal)
                 return
             }
 

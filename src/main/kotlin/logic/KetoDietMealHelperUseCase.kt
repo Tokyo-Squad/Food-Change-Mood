@@ -4,18 +4,18 @@ import org.example.model.Meal
 
 class KetoDietMealHelperUseCase(
     private val csvRepository: CsvRepository,
-    ): CalculatePercentage, DisLikeProvider{
+    ): CalculatePercentage, ReactionProvider{
 
     private val disLikedFood = mutableSetOf<Meal>()
+    private val likedFood  = mutableSetOf<Meal>()
 
-    fun getRandomFriendlyMeal(): Meal {
-        val friendlyMeals = getAllMeal().filter { isFriendlyMeal(it) }
+    operator fun invoke(): Meal {
+        val friendlyMeals = csvRepository.getMeals().filter { isKetoDietMeal(it) }
          return generateSequence { friendlyMeals.random() }.filterNot { disLikedFood.contains(it) }.first()
     }
 
-    private fun getAllMeal(): List<Meal> = csvRepository.getMeals()
 
-    private fun isFriendlyMeal(meal: Meal): Boolean {
+    private fun isKetoDietMeal(meal: Meal): Boolean {
         val nutrition = meal.nutrition
 
         val totalCalories = nutrition.calories
@@ -41,7 +41,13 @@ class KetoDietMealHelperUseCase(
         return (firstValue / secondValue) * 100
     }
 
+    override fun like(meal: Meal) {
+        likedFood.add(meal)
+    }
+
     override fun dislike(meal: Meal){
         disLikedFood.add(meal)
     }
+
+
 }
