@@ -1,8 +1,6 @@
 package org.example
 
 import dependencyinjection.projectModule
-import kotlinx.datetime.Clock
-import org.example.data.CsvMealReader
 import org.example.dependencyinjection.useCaseModule
 import org.example.presentation.ConsoleUi
 import org.koin.core.context.GlobalContext.startKoin
