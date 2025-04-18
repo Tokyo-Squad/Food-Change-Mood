@@ -289,11 +289,12 @@ fun getSweetsWithNoEggs(useCase: SweetMealWithoutEggUseCase) {
             when (readLine()?.uppercase()) {
                 "L" -> {
                     viewMoreDetailsAboutSpecificMeal(sweet)
+                    useCase.like(meal = sweet)
                     return
                 }
 
                 "D" -> {
-                    useCase.disLikeMeal(sweet)
+                    useCase.dislike(sweet)
                     println("Finding another sweet...")
                 }
 
