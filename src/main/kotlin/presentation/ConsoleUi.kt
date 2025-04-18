@@ -68,10 +68,10 @@ fun mealsByAddDateConsole(getMealsByAddDateUseCase: GetMealsByAddDateUseCase) {
 
 
 fun guessGame(
-    attempts: Int = 3, repo: CsvRepository
+    getRandomMealUseCase:GetRandomMealUseCase
 ) {
-
-    val randomMeal = repo.getMeals().random()
+    val attempts = 3
+    val randomMeal = getRandomMealUseCase()
     val correctTime = randomMeal.preparationTime
     var remainingAttempts = attempts
 
