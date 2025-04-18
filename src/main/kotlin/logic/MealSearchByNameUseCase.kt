@@ -3,7 +3,7 @@ package org.example.logic
 import org.example.model.Meal
 import org.example.utils.MealSearchIndex
 
-class MealSearchByNameUseCase(
+class GetMealsByNameUseCase(
     private val csvRepository: CsvRepository
 ) {
     operator fun invoke(query: String): List<Meal> {
