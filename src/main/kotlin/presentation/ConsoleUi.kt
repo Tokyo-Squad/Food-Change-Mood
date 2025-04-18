@@ -7,6 +7,7 @@ import org.koin.java.KoinJavaComponent.getKoin
 
 class ConsoleUi {
     val healthyFastFoodUseCase = getKoin().get<GetHealthyFastFoodMealsUseCase>()
+    val getMealsByNameUseCase= getKoin().get<GetMealsByNameUseCase>()
     val iraqiMealsUseCase = getKoin().get<GetIraqiMealsUseCase>()
     val easyFoodSuggestionUseCase = getKoin().get<EasyFoodSuggestionUseCase>()
     val sweetWithoutEggUseCase = getKoin().get<SweetMealWithoutEggUseCase>()
@@ -57,7 +58,7 @@ class ConsoleUi {
         try {
             when (choice) {
                 1 -> getHealthyFastFoodMealsConsole(healthyFastFoodUseCase)
-//                2 -> Feature 2
+                2 -> getMealsByName(getMealsByNameUseCase)
                 3 -> getIraqiMeals(iraqiMealsUseCase)
                 4 -> getEasyFoodSuggestionConsole(easyFoodSuggestionUseCase)
                 5 -> guessGame(3, repo)
