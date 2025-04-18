@@ -1,15 +1,16 @@
 package org.example.logic
 
 import org.example.model.Meal
-import org.example.utils.containAnyOf
 
 class SweetMealWithoutEggUseCase(
     private val csvRepository: CsvRepository,
-)  {
+    private val sweetMealsNotContainEgg: GetSweetMealsNotContainEggUseCase
+) : ReactionProvider {
     private val disLikedFood = mutableSetOf<Meal>()
+    private val likedFood = mutableSetOf<Meal>()
 
      fun getRandomsEggFreeSweet(): Meal {
-        val eggFreeSweets = getSweetMealsContainEgg()
+        val eggFreeSweets = sweetMealsNotContainEgg()
         if (eggFreeSweets.isEmpty()) {
             throw NoSuchElementException("No egg-free sweets available")
         }
@@ -19,26 +20,11 @@ class SweetMealWithoutEggUseCase(
 
     }
 
-     private fun getSweetMealsContainEgg(): List<Meal> {
-        return getSweetMeals().filter { meal ->
-            meal.containAnyOf("egg")
-        }
+    override fun like(meal: Meal) {
+        likedFood.add(meal)
     }
 
-     private fun getSweetMeals(): List<Meal> {
-        val sweetTypes = listOf("sweet", "dessert", "cake", "candy", "cookie", "pie", "chocolate", "sugar")
-        return getAllMeals().filter { meal ->
-            meal.containAnyOf(sweetTypes)
-        }
-
-    }
-
-     private fun getAllMeals(): List<Meal> {
-        return csvRepository.getMeals()
-    }
-
-
-     fun disLikeMeal(meal: Meal) {
+    override fun dislike(meal: Meal) {
         disLikedFood.add(meal)
     }
 }
