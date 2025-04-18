@@ -1,33 +1,22 @@
 package org.example.presentation
 
-import org.example.logic.CsvRepository
-import org.example.logic.GetLargeGroupItalyMealUseCase
-import org.example.logic.GetMealsByAddDateUseCase
-import org.example.logic.PlayIngredientGameUseCase
-import org.example.logic.HighCalorieMealSuggestionUseCase
-import org.example.logic.GetIraqiMealsUseCase
-import org.example.logic.GymHelperUseCase
 import org.example.logic.*
 import viewMoreDetailsAboutSpecificMeal
 
 
 fun playIngredientGame(gameUseCase: PlayIngredientGameUseCase) {
-    // Play the game
     val result = gameUseCase.playGame { meal, options ->
         println("Guess an ingredient in '${meal.name}':")
 
-        // Display the options to the user
         options.forEachIndexed { i, option -> println("${i + 1}. $option") }
 
-        // Read the user's choice (e.g., via console input)
         val choice = readlnOrNull()?.toIntOrNull()
 
         // Return the selected ingredient, or null if the input is invalid
         options.getOrNull((choice ?: 1) - 1) // Default to the first option if invalid
     }
-    // Print the final game result
-    println("Game Over! Final Score: ${result.first}, Correct Answers: ${result.second}, Reason: ${result.third}")
 
+    println("Game Over! Final Score: ${result.first}, Correct Answers: ${result.second}, Reason: ${result.third}")
 }
 
 fun getMealsByName(getMealsByNameUseCase: GetMealsByNameUseCase) {
@@ -41,13 +30,15 @@ fun getMealsByName(getMealsByNameUseCase: GetMealsByNameUseCase) {
     } else {
         println("\nFound ${meals.size} meals:")
         meals.forEachIndexed { index, meal ->
-            println("""
+            println(
+                """
             ${index + 1}. ${meal.name}
                Time: ${meal.preparationTime} min
                Ingredients: ${meal.numberOfIngredients}
                Steps: ${meal.numberOfSteps}
                Tags: ${meal.tags.take(3).joinToString()}
-            """.trimIndent())
+            """.trimIndent()
+            )
         }
     }
 }

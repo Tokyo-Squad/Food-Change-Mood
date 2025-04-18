@@ -3,7 +3,7 @@ package org.example.utils
 object FuzzySearch {
     private const val ALPHABET_SIZE = 256
 
-    fun bitapSearch(text: String, pattern: String,): Boolean {
+    fun bitapSearch(text: String, pattern: String): Boolean {
         val m = pattern.length
         val mask = LongArray(ALPHABET_SIZE) { 0L }
         val patternMask = 1L shl (m - 1)

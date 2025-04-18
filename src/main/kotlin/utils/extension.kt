@@ -5,15 +5,15 @@ import kotlin.random.Random
 
 fun Meal.containAnyOf(types: List<String>): Boolean {
 
-    return  name.containsAny(types, ignoreCase = true) ||
+    return name.containsAny(types, ignoreCase = true) ||
             description?.containsAny(types, ignoreCase = true) ?: false ||
             tags.any { tag -> tag.containsAny(types, ignoreCase = true) } ||
             ingredients.any { ingredient -> ingredient.containsAny(types, ignoreCase = true) } ||
             steps.any { step -> step.containsAny(types, ignoreCase = true) }
 }
 
-fun Meal.containAnyOf(text: String): Boolean{
-    return  name.contains(text, ignoreCase = true) ||
+fun Meal.containAnyOf(text: String): Boolean {
+    return name.contains(text, ignoreCase = true) ||
             description?.contains(text, ignoreCase = true) ?: false ||
             tags.any { tag -> tag.contains(text, ignoreCase = true) } ||
             ingredients.any { ingredient -> ingredient.contains(text, ignoreCase = true) } ||
