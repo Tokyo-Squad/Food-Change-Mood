@@ -1,213 +1,101 @@
 package org.example.presentation
 
-import org.example.logic.CsvRepository
-import org.example.logic.GetLargeGroupItalyMealUseCase
-import org.example.logic.GetMealsByAddDateUseCase
-import org.example.logic.PlayIngredientGameUseCase
-import org.example.logic.HighCalorieMealSuggestionUseCase
-import org.example.logic.GetIraqiMealsUseCase
-import org.example.logic.GymHelperUseCase
 import org.example.logic.*
-import org.koin.mp.KoinPlatform.getKoin
+import org.example.utils.InvalidDateFormatException
+import org.example.utils.NoMealsFoundException
+import org.koin.java.KoinJavaComponent.getKoin
 
-
-fun getMealsByDateConsole(getMealsByAddDateUseCase: GetMealsByAddDateUseCase) {
-    println("Enter a date (yyyy-MM-dd) to search for meals:")
-    val dateInput = readLine() ?: ""
-    val result = getMealsByAddDateUseCase(dateInput)
-    result.onSuccess {
-        println("Meals added on $dateInput:")
-        result.getOrNull()?.forEach { (id, name) -> println("ID: $id, Name: $name") }
-    }.onFailure {
-        println(result.exceptionOrNull()?.message)
-    }
-}
-
-fun playIngredientGame(gameUseCase: PlayIngredientGameUseCase) {
-    // Play the game
-    val result = gameUseCase.playGame { meal, options ->
-        println("Guess an ingredient in '${meal.name}':")
-
-        // Display the options to the user
-        options.forEachIndexed { i, option -> println("${i + 1}. $option") }
-
-        // Read the user's choice (e.g., via console input)
-        val choice = readlnOrNull()?.toIntOrNull()
-
-        // Return the selected ingredient, or null if the input is invalid
-        options.getOrNull((choice ?: 1) - 1) // Default to the first option if invalid
-    }
-    // Print the final game result
-    println("Game Over! Final Score: ${result.first}, Correct Answers: ${result.second}, Reason: ${result.third}")
-
-}
-
-fun mealsByAddDateConsole(getMealsByAddDateUseCase: GetMealsByAddDateUseCase) {
-    println("Enter a date (yyyy-MM-dd) to search for meals:")
-    val dateInput = readLine() ?: ""
-
-    getMealsByAddDateUseCase(dateInput).onSuccess { meals ->
-        println("\nMeals added on $dateInput:")
-        meals.forEach { meal ->
-            println("ID: ${meal.id}, Name: ${meal.name}")
+class ConsoleUi {
+    val healthyFastFoodUseCase = getKoin().get<GetHealthyFastFoodMealsUseCase>()
+    val iraqiMealsUseCase = getKoin().get<GetIraqiMealsUseCase>()
+    val easyFoodSuggestionUseCase = getKoin().get<EasyFoodSuggestionUseCase>()
+    val sweetWithoutEggUseCase = getKoin().get<SweetMealWithoutEggUseCase>()
+    val ketoDietHelperUseCase = getKoin().get<KetoDietMealHelperUseCase>()
+    val mealsByAddDateUseCase = getKoin().get<GetMealsByAddDateUseCase>()
+    val gymHelperUseCase = getKoin().get<GymHelperUseCase>()
+    val exploreFoodCultureUseCase = getKoin().get<ExploreCountriesFoodCultureUseCase>()
+    val ingredientGameUseCase = getKoin().get<PlayIngredientGameUseCase>()
+    val potatoMealsUseCase = GetRandomPotatoMealsUseCase()
+    val highCalorieMealUseCase = getKoin().get<HighCalorieMealSuggestionUseCase>()
+    val seafoodMealsUseCase = GetSeafoodMealsSortedByProteinUseCase()
+    val largeGroupItalyMealUseCase = getKoin().get<GetLargeGroupItalyMealUseCase>()
+    val repo: CsvRepository = getKoin().get()
+    fun start() {
+        while (true) {
+            displayMenu()
+            handleUserChoice(getUserChoice())
         }
-
-        val mealsMap = meals.associateBy { it.id }
-
-        println("\nEnter a meal ID to view more details (or press Enter to exit):")
-        val selectedId = readLine()?.toIntOrNull()
-        mealsMap[selectedId]?.let { selectedMeal ->
-            viewMoreDetailsAboutSpecificMeal(selectedMeal)
-        } ?: println("Meal with ID $selectedId not found in the current list.")
-
-    }.onFailure {
-        println(it.message)
     }
 
-}
+    private fun displayMenu() {
+        println("\nWelcome to Food Change Mood!")
+        println("Choose an option:")
+        println("1. Get Healthy Fast Food Meals (15 mins or less, low fat)")
+        println("2. Search Meals by Name")
+        println("3. Discover Iraqi Meals")
+        println("4. Easy Food Suggestions (30 mins, ≤5 ingredients, ≤6 steps)")
+        println("5. Preparation Time Guess Game")
+        println("6. Sweets with No Eggs")
+        println("7. Keto Diet Meal Helper")
+        println("8. Search Foods by Add Date")
+        println("9. Gym Helper (Calories & Protein Match)")
+        println("10. Explore Other Countries' Food Culture")
+        println("11. Ingredient Guessing Game")
+        println("12. I Love Potato (Potato-based meals)")
+        println("13. So Thin Problem (High Calorie Meals)")
+        println("14. Seafood Meals by Protein Content")
+        println("15. Italian Large Group Meals")
+        println("0. Exit")
+        println()
+    }
 
+    private fun getUserChoice(): Int {
+        return readlnOrNull()?.toIntOrNull() ?: -1
+    }
 
-fun guessGame(
-    attempts: Int = 3, repo: CsvRepository
-) {
+    private fun handleUserChoice(choice: Int) {
+        try {
+            when (choice) {
+                1 -> getHealthyFastFoodMealsConsole(healthyFastFoodUseCase)
+//                2 -> Feature 2
+                3 -> getIraqiMeals(iraqiMealsUseCase)
+                4 -> getEasyFoodSuggestionConsole(easyFoodSuggestionUseCase)
+                5 -> guessGame(3, repo)
+                6 -> getSweetsWithNoEggs(sweetWithoutEggUseCase)
+                7 -> getKetoDietHelper(ketoDietHelperUseCase)
+                8 -> getMealsByAddDateConsole(mealsByAddDateUseCase)
+                9 -> getGymHelper(gymHelperUseCase)
+                10 -> exploreFoodCulture(exploreFoodCultureUseCase)
+                11 -> playIngredientGame(ingredientGameUseCase)
+                12 -> getPotatoMeals(potatoMealsUseCase, repo) // will need a refactor to use UseCase only
+                13 -> getHighCalorieMealSuggestionConsole(highCalorieMealUseCase)
+                14 -> getSeafoodMealsByProtein(seafoodMealsUseCase, repo)
+                15 -> showItalyLargeGroupMeals(largeGroupItalyMealUseCase)
+                0 -> {
+                    println("Thank you for using Food Change Mood! Goodbye!")
+                    System.exit(0)
+                }
 
-    val randomMeal = repo.getMeals().random()
-    val correctTime = randomMeal.preparationTime
-    var remainingAttempts = attempts
-
-    println("Guess the preparation time (in minutes) for the meal: ${randomMeal.name}")
-
-    while (remainingAttempts > 0) {
-        print("Enter your guess ($remainingAttempts attempts left): ")
-        val userInput = readLine()
-
-        // Validate user input
-        val guessedTime = userInput?.toIntOrNull()
-        if (guessedTime == null) {
-            println("Please enter a valid number.")
-            continue
-        }
-        when {
-            guessedTime < correctTime -> {
-                println("Too low! Try again.")
+                else -> println("Invalid option. Please try again.")
             }
-
-            guessedTime > correctTime -> {
-                println("Too high! Try again.")
-            }
-
-            else -> {
-                println("Congratulations! You guessed the correct time: $correctTime minutes.")
-                return // Exit the function if the guess is correct
-            }
-        }
-        remainingAttempts--
-    }
-
-}
-
-fun getHighCalorieMealSuggestionConsole(highCalorieMealSuggestionUseCase: HighCalorieMealSuggestionUseCase) {
-    val suggestion = highCalorieMealSuggestionUseCase.getNextSuggestion()
-    if (suggestion == null) {
-        println("No more high-calorie meals available to suggest.")
-        return
-    }
-    println("High-Calorie Meal Suggestion: ${suggestion.name}")
-    println("Enter 'yes' to view details, 'no' for another suggestion")
-
-    when (readLine()?.trim()?.lowercase()) {
-        "yes", "y" -> {
-            println("Meal Details:")
-            println("Name       : ${suggestion.name}")
-            println("Description: ${suggestion.description}")
-            println("Calories   : ${suggestion.nutrition.calories}")
+        } catch (e: Exception) {
+            handleError(e)
         }
 
-        "no", "n" -> {
-            getHighCalorieMealSuggestionConsole(highCalorieMealSuggestionUseCase)
-        }
-
-        else -> {
-            println("Invalid input.")
-        }
+        waitForUser()
     }
-}
 
-fun showItalyLargeGroupMeals() {
-
-    val largeGroupItalyMealUseCase: GetLargeGroupItalyMealUseCase = getKoin().get<GetLargeGroupItalyMealUseCase>()
-    val italianLargeGroupItalyMeal = largeGroupItalyMealUseCase.invoke()
-    italianLargeGroupItalyMeal.forEachIndexed { index, meal ->
-        println("${index + 1} - $meal")
-    }
-}
-
-fun getHealthyFastFoodMealsConsole(useCase: GetHealthyFastFoodMealsUseCase) {
-    println("Fetching healthy fast food meals (under 15 mins, low fat/carbs)...")
-
-    val result = useCase.getHealthyFastFoodMeals()
-
-    if (result.isEmpty()) {
-        println("No healthy fast food meals found.")
-    } else {
-        println("Healthy Fast Food Meals:")
-        result.forEach { meal ->
-            println("ID: ${meal.id}, Name: ${meal.name}, Time: ${meal.preparationTime} mins")
+    private fun handleError(error: Exception) {
+        println("\nAn error occurred: ${error.message}")
+        when (error) {
+            is InvalidDateFormatException -> println("Please use the format yyyy-MM-dd")
+            is NoMealsFoundException -> println("No meals found with the specified criteria")
+            else -> println("Please try again or choose a different option")
         }
     }
-}
 
-
-fun getKetoDietHelper(){
-    val ketoDietMealHelperUseCase : KetoDietMealHelperUseCase = getKoin().get<KetoDietMealHelperUseCase>()
-    while (true) {
-        val randomMeal = ketoDietMealHelperUseCase.getRandomFriendlyMeal()
-
-        println("Random Keto Diet: $randomMeal")
-        println(
-            """
-            1- Like (continue)
-            2- Dislike (show another keto diet)
-            3- Exit
-            """.trimIndent()
-        )
-
-        when (readLine()) {
-            "1" -> {
-                println("Meal liked! Continuing...")
-                return
-            }
-            "2" -> {
-                ketoDietMealHelperUseCase.dislike(randomMeal)
-                println("Meal disliked. Fetching another suggestion...")
-            }
-            "3" -> {
-                println("Exiting...")
-                return
-            }
-            else -> println("Please enter a valid option (1, 2, or 3)")
-        }
+    private fun waitForUser() {
+        println("\nPress Enter to continue...")
+        readlnOrNull()
     }
-}
-
-fun getIraqiMeals(iraqiMealUeCase: GetIraqiMealsUseCase) {
-    println("All Iraqi meal")
-    iraqiMealUeCase.invoke().forEachIndexed { index, meal ->
-        println(" ${index + 1} : $meal")
-    }
-}
-
-fun getGymHelper(gymHelper: GymHelperUseCase) {
-    print("please enter your target calories: ")
-    val targetCalories = readln().toFloatOrNull()
-    print("please enter your target calories: ")
-    val targetProtein = readln().toFloatOrNull()
-
-    if (targetCalories != null && targetProtein != null) {
-        gymHelper.invoke(targetCalories = targetCalories, targetProtein = targetProtein).forEachIndexed { index, meal ->
-            println("${index + 1} - $meal")
-        }
-    } else
-        throw NullPointerException("please enter correct value")
-
 }
