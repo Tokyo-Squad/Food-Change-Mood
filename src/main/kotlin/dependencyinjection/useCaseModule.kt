@@ -24,4 +24,8 @@ val useCaseModule = module {
     single { GetMealsByNameUseCase(get()) }
     single { GetRandomMealUseCase(get()) }
     single { GenerateIngredientQuestionUseCase(get()) }
+    single { KetoDietMealHelperUseCase(csvRepository = get()) }
+    single { EasyFoodSuggestionUseCase(get()) }
+    single { GetRandomPotatoMealsUseCase(get()) }
+    single { GetSeafoodMealsSortedByProteinUseCase(get()) }
 }

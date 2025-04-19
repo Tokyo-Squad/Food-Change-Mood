@@ -14,6 +14,7 @@ fun playIngredientGame(gameUseCase: PlayIngredientGameUseCase) {
         print("Enter your choice (1-${options.size}): ")
         val choice = readlnOrNull()?.toIntOrNull()
 
+        options.getOrNull((choice ?: 1) - 1)
         when {
             choice == null -> {
                 println("Invalid input. Please enter a number.")
@@ -149,6 +150,7 @@ fun showItalyLargeGroupMeals(largeGroupItalyMealUseCase: GetLargeGroupItalyMealU
                     println("You've reached the end of the list!")
                 }
             }
+
             "p" -> {
                 if (pageNumber > 0) {
                     pageNumber--
@@ -157,6 +159,7 @@ fun showItalyLargeGroupMeals(largeGroupItalyMealUseCase: GetLargeGroupItalyMealU
                     println("You're already on the first page!")
                 }
             }
+
             else -> {
                 println("Exiting...")
                 return
@@ -343,7 +346,7 @@ fun getPotatoMeals(useCase: GetRandomPotatoMealsUseCase) {
     }
 }
 
-fun getSeafoodMealsByProtein(useCase: GetSeafoodMealsSortedByProteinUseCase, repo: CsvRepository) {
+fun getSeafoodMealsByProtein(useCase: GetSeafoodMealsSortedByProteinUseCase) {
     println("\n=== Seafood Meals by Protein Content ===")
 
     val seafoodMeals = useCase()

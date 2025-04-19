@@ -17,10 +17,11 @@ class ConsoleUi {
     val gymHelperUseCase = getKoin().get<GymHelperUseCase>()
     val exploreFoodCultureUseCase = getKoin().get<ExploreCountriesFoodCultureUseCase>()
     val ingredientGameUseCase = getKoin().get<PlayIngredientGameUseCase>()
-    val potatoMealsUseCase = GetRandomPotatoMealsUseCase(csvRepository = repo)
+    val potatoMealsUseCase = getKoin().get<GetRandomPotatoMealsUseCase>()
     val highCalorieMealUseCase = getKoin().get<HighCalorieMealSuggestionUseCase>()
-    val seafoodMealsUseCase = GetSeafoodMealsSortedByProteinUseCase(csvRepository = repo)
+    val seafoodMealsUseCase = getKoin().get<GetSeafoodMealsSortedByProteinUseCase>()
     val largeGroupItalyMealUseCase = getKoin().get<GetLargeGroupItalyMealUseCase>()
+    val repo: CsvRepository = getKoin().get()
 
     fun start() {
         while (true) {
@@ -69,9 +70,9 @@ class ConsoleUi {
                 9 -> getGymHelper(gymHelperUseCase)
                 10 -> exploreFoodCulture(exploreFoodCultureUseCase)
                 11 -> playIngredientGame(ingredientGameUseCase)
-                12 -> getPotatoMeals(potatoMealsUseCase) // will need a refactor to use UseCase only
+                12 -> getPotatoMeals(potatoMealsUseCase)
                 13 -> getHighCalorieMealSuggestionConsole(highCalorieMealUseCase)
-                14 -> getSeafoodMealsByProtein(seafoodMealsUseCase, repo)
+                14 -> getSeafoodMealsByProtein(seafoodMealsUseCase)
                 15 -> showItalyLargeGroupMeals(largeGroupItalyMealUseCase)
                 0 -> {
                     println("Thank you for using Food Change Mood! Goodbye!")
