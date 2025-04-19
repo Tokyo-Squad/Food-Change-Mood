@@ -14,7 +14,7 @@ import org.example.presentation.io.RealConsoleIO
 import org.koin.dsl.module
 
 val projectModule = module {
-    single { CsvMealReader("C:\\Users\\Mosta\\Downloads\\food.csv") }
+    single { CsvMealReader("food.csv") }
     single { CsvMealParser() }
     single<CsvRepository> { CsvRepositoryImpl(get(), get()) }
     single { MealSearchIndex(get()) }
