@@ -297,17 +297,18 @@ fun getSweetsWithNoEggs(useCase: SweetMealWithoutEggUseCase) {
 
 fun exploreFoodCulture(useCase: ExploreCountriesFoodCultureUseCase) {
     print("\n=== Food Culture Explorer ===\nEnter country name: ")
-
-    val meals = useCase.invoke(readLine() ?: return)
+    val countryInput = readlnOrNull()?.trim() ?: return
+    val meals = useCase(countryInput)
 
     if (meals.isEmpty()) {
         println("No meals found for this country.")
         return
     }
 
-    println("\nFound ${meals.size} meals:")
+    println("\nFound ${meals.size} ${countryInput.lowercase()} meals:")
     meals.forEachIndexed { i, meal ->
-        println("${i + 1}. ${meal.name} | ${meal.preparationTime}mins")
+        println("${i + 1}. ${meal.name} | ${meal.preparationTime} mins")
+        println("   Ingredients: ${meal.ingredients.take(3).joinToString()}...")
     }
 }
 
