@@ -1,6 +1,8 @@
 package org.example.presentation
 
 import org.example.presentation.controller.*
+import org.example.utils.InvalidDateFormatException
+import org.example.utils.NoMealsFoundException
 
 
 class FoodApplicationUI(
@@ -23,32 +25,45 @@ class FoodApplicationUI(
         while (true) {
             displayMenu()
             when (readMenuChoice()) {
-                1 -> executeWithPause { healthyFastFoodMealsController.display() }
-                2 -> executeWithPause { mealSearchController.display() }
-                3 -> executeWithPause { iraqiMealsController.display() }
-                4 -> executeWithPause { easyFoodSuggestionController.display() }
-                5 -> executeWithPause { ingredientGameController.display() }
-                6 -> executeWithPause { sweetMealsController.displayEggFreeSweets() }
-                7 -> executeWithPause { ketoDietController.display() }
-                8 -> executeWithPause { mealsByAddDateController.display() }
-                9 -> executeWithPause { gymHelperController.display() }
-                10 -> executeWithPause { exploreFoodCultureController.display() }
-                11 -> executeWithPause { ingredientGameController.display() }
-                12 -> executeWithPause { potatoMealsController.display() }
-                13 -> executeWithPause { highCalorieMealSuggestionController.display() }
-                14 -> executeWithPause { seafoodMealsByProteinController.display() }
-                15 -> executeWithPause { italyLargeGroupMealsController.display() }
+                1 -> executeWithPauseAndHandleErrors { healthyFastFoodMealsController.display() }
+                2 -> executeWithPauseAndHandleErrors { mealSearchController.display() }
+                3 -> executeWithPauseAndHandleErrors { iraqiMealsController.display() }
+                4 -> executeWithPauseAndHandleErrors { easyFoodSuggestionController.display() }
+                5 -> executeWithPauseAndHandleErrors { ingredientGameController.display() }
+                6 -> executeWithPauseAndHandleErrors { sweetMealsController.displayEggFreeSweets() }
+                7 -> executeWithPauseAndHandleErrors { ketoDietController.display() }
+                8 -> executeWithPauseAndHandleErrors { mealsByAddDateController.display() }
+                9 -> executeWithPauseAndHandleErrors { gymHelperController.display() }
+                10 -> executeWithPauseAndHandleErrors { exploreFoodCultureController.display() }
+                11 -> executeWithPauseAndHandleErrors { ingredientGameController.display() }
+                12 -> executeWithPauseAndHandleErrors { potatoMealsController.display() }
+                13 -> executeWithPauseAndHandleErrors { highCalorieMealSuggestionController.display() }
+                14 -> executeWithPauseAndHandleErrors { seafoodMealsByProteinController.display() }
+                15 -> executeWithPauseAndHandleErrors { italyLargeGroupMealsController.display() }
                 0 -> break
                 else -> println("Invalid choice. Please try again.")
             }
         }
     }
 
-    private fun executeWithPause(action: () -> Unit) {
-        action()
-        println("\nPress Enter to continue...")
-        readLine()
+    private fun executeWithPauseAndHandleErrors(action: () -> Unit) {
+        try {
+            action()
+        } catch (e: NoMealsFoundException) {
+            println("\n⚠️ ${e.message}")
+            println("Try different search criteria or choose another option.")
+        } catch (e: InvalidDateFormatException) {
+            println("\n⚠️ ${e.message}")
+            println("Please use the format yyyy-MM-dd (e.g., 2023-12-31)")
+        } catch (e: Exception) {
+            println("\n⚠️ An unexpected error occurred: ${e.message}")
+            println("Please try again or choose a different option.")
+        } finally {
+            println("\nPress Enter to continue...")
+            readLine()
+        }
     }
+
 
     private fun displayMenu() {
         println("""
