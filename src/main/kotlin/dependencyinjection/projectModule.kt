@@ -17,7 +17,7 @@ val projectModule = module {
     single<CsvRepository> { CsvRepositoryImpl(get(), get()) }
     single { MealSearchIndex(get()) }
     single { KetoDietMealHelperUseCase(csvRepository = get()) }
-    single { SweetMealWithoutEggUseCase(csvRepository = get()) }
+    single { SweetMealWithoutEggUseCase(csvRepository = get(), sweetMealsNotContainEgg = get()) }
     single { EasyFoodSuggestionUseCase(get()) }
     single { ConsoleUi() }
 }

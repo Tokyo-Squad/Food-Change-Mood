@@ -5,7 +5,7 @@ import org.example.model.Meal
 class GetHealthyFastFoodMealsUseCase(
     private val repository: CsvRepository
 ) {
-    fun getHealthyFastFoodMeals(): List<Meal> {
+    operator fun invoke(): List<Meal> {
         val allMeals = repository.getMeals()
 
         // Compute average values across the dataset
@@ -16,22 +16,12 @@ class GetHealthyFastFoodMealsUseCase(
         return filterHealthyFastMeals(allMeals, avgTotalFat, avgSaturatedFat, avgCarbs)
 
     }
+
     private fun filterHealthyFastMeals(
-        allMeals: List<Meal>,
-        avgTotalFat: Double,
-        avgSaturatedFat: Double,
-        avgCarbs: Double
+        allMeals: List<Meal>, avgTotalFat: Double, avgSaturatedFat: Double, avgCarbs: Double
     ): List<Meal> {
-        return allMeals
-            .asSequence()
-            .filter { meal ->
-                meal.preparationTime <= 15 &&
-                        meal.tags.any { it.equals("fast food", ignoreCase = true) } &&
-                        meal.nutrition.totalFat < avgTotalFat &&
-                        meal.nutrition.saturatedFat < avgSaturatedFat &&
-                        meal.nutrition.carbohydrates < avgCarbs
-            }
-            .sortedBy { it.nutrition.totalFat }
-            .toList()
+        return allMeals.asSequence().filter { meal ->
+                meal.preparationTime <= 15 && meal.nutrition.totalFat <= avgTotalFat && meal.nutrition.saturatedFat <= avgSaturatedFat && meal.nutrition.carbohydrates <= avgCarbs
+            }.sortedBy { it.nutrition.totalFat }.toList()
     }
 }

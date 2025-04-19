@@ -7,7 +7,7 @@ class GetLargeGroupItalyMealUseCase(
     private val csvRepository: CsvRepository
 ) {
 
-    fun invoke(): List<Meal> {
+    operator fun invoke(): List<Meal> {
         return csvRepository.getMeals()
             .filter(::isItalianMeal)
             .filter(::isSuitableForLargeGroups)

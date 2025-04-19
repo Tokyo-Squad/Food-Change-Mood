@@ -3,20 +3,15 @@ package org.example.presentation
 import org.example.logic.*
 import viewMoreDetailsAboutSpecificMeal
 
-
 fun playIngredientGame(gameUseCase: PlayIngredientGameUseCase) {
-    val result = gameUseCase.playGame { meal, options ->
+    val result = gameUseCase.invoke { meal, options ->
         println("Guess an ingredient in '${meal.name}':")
 
         options.forEachIndexed { i, option -> println("${i + 1}. $option") }
 
         val choice = readlnOrNull()?.toIntOrNull()
-
-        // Return the selected ingredient, or null if the input is invalid
-        options.getOrNull((choice ?: 1) - 1) // Default to the first option if invalid
     }
-
-    println("Game Over! Final Score: ${result.first}, Correct Answers: ${result.second}, Reason: ${result.third}")
+    println("Game Over! Final Score: ${result.finalScore}, Correct Answers: ${result.correctAnswers}, Reason: ${result.message}")
 }
 
 fun getMealsByName(getMealsByNameUseCase: GetMealsByNameUseCase) {
@@ -97,30 +92,67 @@ fun getHighCalorieMealSuggestionConsole(useCase: HighCalorieMealSuggestionUseCas
 
 fun showItalyLargeGroupMeals(largeGroupItalyMealUseCase: GetLargeGroupItalyMealUseCase) {
     println("\n=== ITALIAN GROUP MEALS ===")
-    val italianLargeGroupMeals = largeGroupItalyMealUseCase.invoke()
+    val pageSize = 20
+    var pageNumber = 0
+    val allMeals = largeGroupItalyMealUseCase()
 
-    italianLargeGroupMeals.forEachIndexed { index, meal ->
-        println(
-            """
-            ${index + 1}. ${meal.name.capitalize()}
-               • Serves: Large group
-               • Prep time: ${meal.preparationTime} mins
-               • Main ingredients: ${meal.ingredients.take(5).joinToString(", ")}
-               • Tags: ${
-                meal.tags.filter { it.contains("italian") || it.contains("group") || it.contains("party") }
-                    .joinToString(", ")
-            }
-        """.trimIndent()
-        )
+    fun displayMeals(page: Int) {
+        val start = page * pageSize
+        val end = start + pageSize
+        val italianLargeGroupMeals = allMeals.slice(start until minOf(end, allMeals.size))
+
+        println("\n=== Page ${page + 1} ===")
+        italianLargeGroupMeals.forEachIndexed { index, meal ->
+            println(
+                """
+                ${start + index + 1}. ${meal.name.capitalize()}
+                   • Serves: Large group
+                   • Prep time: ${meal.preparationTime} mins
+                   • Main ingredients: ${meal.ingredients.take(5).joinToString(", ")}
+                   • Tags: ${
+                    meal.tags.filter { it.contains("italian") || it.contains("group") || it.contains("party") }
+                        .joinToString(", ")
+                }
+            """.trimIndent()
+            )
+        }
+
+        println("\nTotal meals shown: ${start + italianLargeGroupMeals.size} of ${allMeals.size}")
+        println("Press 'n' for next page, 'p' for previous page, or any other key to exit")
     }
 
-    println("\nTotal meals found: ${italianLargeGroupMeals.size}")
+    displayMeals(pageNumber)
+
+    while (true) {
+        when (readLine()?.trim()?.lowercase()) {
+            "n" -> {
+                if ((pageNumber + 1) * pageSize < allMeals.size) {
+                    pageNumber++
+                    displayMeals(pageNumber)
+                } else {
+                    println("You've reached the end of the list!")
+                }
+            }
+            "p" -> {
+                if (pageNumber > 0) {
+                    pageNumber--
+                    displayMeals(pageNumber)
+                } else {
+                    println("You're already on the first page!")
+                }
+            }
+            else -> {
+                println("Exiting...")
+                return
+            }
+        }
+    }
 }
 
 fun getHealthyFastFoodMealsConsole(useCase: GetHealthyFastFoodMealsUseCase) {
     println("\n=== Healthy Fast Food Meals (15 mins or less) ===")
 
-    val result = useCase.getHealthyFastFoodMeals()
+    val result = useCase.invoke()
 
     if (result.isEmpty()) {
         println("No healthy fast food meals found.")
@@ -135,7 +167,7 @@ fun getHealthyFastFoodMealsConsole(useCase: GetHealthyFastFoodMealsUseCase) {
 
 fun getKetoDietHelper(ketoDietMealHelperUseCase: KetoDietMealHelperUseCase) {
     while (true) {
-        val randomMeal = ketoDietMealHelperUseCase.getRandomFriendlyMeal()
+        val randomMeal = ketoDietMealHelperUseCase()
 
         println("Random Keto Diet:\n")
         viewMoreDetailsAboutSpecificMeal(randomMeal)
@@ -150,6 +182,7 @@ fun getKetoDietHelper(ketoDietMealHelperUseCase: KetoDietMealHelperUseCase) {
         when (readLine()) {
             "1" -> {
                 println("Meal liked! Continuing...")
+                ketoDietMealHelperUseCase.like(meal = randomMeal)
                 return
             }
 
@@ -242,11 +275,12 @@ fun getSweetsWithNoEggs(useCase: SweetMealWithoutEggUseCase) {
             when (readLine()?.uppercase()) {
                 "L" -> {
                     viewMoreDetailsAboutSpecificMeal(sweet)
+                    useCase.like(meal = sweet)
                     return
                 }
 
                 "D" -> {
-                    useCase.disLikeMeal(sweet)
+                    useCase.dislike(sweet)
                     println("Finding another sweet...")
                 }
 

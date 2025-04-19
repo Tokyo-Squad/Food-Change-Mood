@@ -36,19 +36,12 @@ private fun String.containsAny(keywords: List<String>, ignoreCase: Boolean): Boo
  * @return A list containing random elements from the original list
  */
 fun <T> List<T>.randomElementsUnique(count: Int): List<T> {
-    // If requested count is larger than list size, return the entire list
+
     if (this.size < count) return this
 
     val random = Random(System.currentTimeMillis())
-    val uniqueIndices = mutableSetOf<Int>()
+    val uniqueIndices = generateUniqueRandomIndices(count, random, this.size)
 
-    // Generate unique random indices
-    while (uniqueIndices.size < count) {
-        val index = random.nextInt(this.size)
-        uniqueIndices.add(index)
-    }
-
-    // Build result list from the unique indices
     val result = ArrayList<T>(count)
     for (index in uniqueIndices) {
         result.add(this[index])
@@ -56,3 +49,25 @@ fun <T> List<T>.randomElementsUnique(count: Int): List<T> {
 
     return result
 }
+
+/**
+ * Helper function.
+ * Generates a set of [count] distinct random integers in the range [0, listSize).
+ *
+ * @param count     Number of unique indices to generate.
+ * @param random    Source of randomness.
+ * @param listSize  Exclusive upper bound for generated indices.
+ * @return Set of unique indices.
+ */
+private fun generateUniqueRandomIndices(
+    count: Int,
+    random: Random,
+    listSize: Int
+): Set<Int> {
+    val indices = mutableSetOf<Int>()
+    while (indices.size < count) {
+        indices.add(random.nextInt(listSize))
+    }
+    return indices
+}
+

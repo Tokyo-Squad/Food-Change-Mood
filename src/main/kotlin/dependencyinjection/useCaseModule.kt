@@ -11,7 +11,9 @@ import org.example.logic.HighCalorieMealSuggestionUseCase
 val useCaseModule = module {
     single { GetHealthyFastFoodMealsUseCase(get<CsvRepository>()) }
     single { GetMealsByAddDateUseCase(get()) }
-    single { SweetMealWithoutEggUseCase(csvRepository = get()) }
+    single { GetSweetMealUseCase(csvRepository = get()) }
+    single { GetSweetMealsNotContainEggUseCase(sweetMeal = get()) }
+    single { SweetMealWithoutEggUseCase(csvRepository = get(), sweetMealsNotContainEgg = get()) }
     single { EasyFoodSuggestionUseCase(get()) }
     single { GetLargeGroupItalyMealUseCase(csvRepository = get()) }
     single { GetIraqiMealsUseCase(csvRepository = get()) }
@@ -20,4 +22,6 @@ val useCaseModule = module {
     single { PlayIngredientGameUseCase(get()) }
     single { HighCalorieMealSuggestionUseCase(get()) }
     single { GetMealsByNameUseCase(get()) }
+    single { GenerateIngredientQuestionUseCase(get()) }
+
 }
