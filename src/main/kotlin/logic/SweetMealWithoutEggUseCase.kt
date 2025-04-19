@@ -3,7 +3,6 @@ package org.example.logic
 import org.example.model.Meal
 
 class SweetMealWithoutEggUseCase(
-    private val csvRepository: CsvRepository,
     private val sweetMealsNotContainEgg: GetSweetMealsNotContainEggUseCase
 ) : ReactionProvider {
     private val disLikedFood = mutableSetOf<Meal>()
