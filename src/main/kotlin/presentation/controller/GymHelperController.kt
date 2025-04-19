@@ -2,6 +2,8 @@ package org.example.presentation.controller
 
 import org.example.logic.GymHelperUseCase
 import org.example.presentation.io.ConsoleIO
+import org.example.utils.MealAppException
+import java.util.*
 
 class GymHelperController(
     private val io: ConsoleIO,
@@ -25,7 +27,7 @@ class GymHelperController(
                     .forEachIndexed { index, meal ->
                         // Build and print out the meal information.
                         val message = """
-                        ${index + 1}. ${meal.name.capitalize()}
+                        ${index + 1}. ${meal.name.replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString() }}
                            • Calories: ${meal.nutrition.calories}kcal
                            • Protein: ${meal.nutrition.protein}g
                            • Carbs: ${meal.nutrition.carbohydrates}g
@@ -35,11 +37,11 @@ class GymHelperController(
                         io.printOutput(message)
                     }
             } else {
-                throw IllegalArgumentException("Please enter valid numbers for calories and protein")
+                throw MealAppException.InvalidArgumentException("Please enter valid numbers for calories and protein")
             }
-        } catch (e: NumberFormatException) {
+        } catch (e: MealAppException.InvalidNumberFormatException) {
             io.printOutput("\n⚠ Error: Please enter valid numbers only")
-        } catch (e: IllegalArgumentException) {
+        } catch (e: MealAppException.InvalidArgumentException) {
             io.printOutput("\n⚠ Error: ${e.message}")
         }
     }

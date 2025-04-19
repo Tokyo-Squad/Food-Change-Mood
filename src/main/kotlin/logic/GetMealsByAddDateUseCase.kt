@@ -2,8 +2,7 @@ package org.example.logic
 
 import kotlinx.datetime.LocalDate
 import org.example.model.Meal
-import org.example.utils.InvalidDateFormatException
-import org.example.utils.NoMealsFoundException
+import org.example.utils.MealAppException
 
 class GetMealsByAddDateUseCase(
     private val repo: CsvRepository
@@ -13,12 +12,12 @@ class GetMealsByAddDateUseCase(
             val date = LocalDate.parse(dateInput)
             val foundMeals = getMealsByAddDate(date)
             if (foundMeals.isEmpty()) {
-                Result.failure(NoMealsFoundException("No meals found for the date: $dateInput"))
+                Result.failure(MealAppException.NoMealsFoundException("No meals found for the date: $dateInput"))
             } else {
                 Result.success(foundMeals)
             }
         } catch (e: Exception) {
-            Result.failure(InvalidDateFormatException("Invalid date format. Please use yyyy-MM-dd."))
+            Result.failure(MealAppException.InvalidDateFormatException("Invalid date format. Please use yyyy-MM-dd."))
         }
     }
 

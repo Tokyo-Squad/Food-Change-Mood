@@ -1,6 +1,7 @@
 package org.example.logic
 
 import org.example.model.Meal
+import org.example.utils.MealAppException
 
 class SweetMealWithoutEggUseCase(
     private val sweetMealsNotContainEgg: GetSweetMealsNotContainEggUseCase
@@ -11,7 +12,7 @@ class SweetMealWithoutEggUseCase(
      fun getRandomsEggFreeSweet(): Meal {
         val eggFreeSweets = sweetMealsNotContainEgg()
         if (eggFreeSweets.isEmpty()) {
-            throw NoSuchElementException("No egg-free sweets available")
+            throw MealAppException.NoSuchElementException("No egg-free sweets available")
         }
         return generateSequence { eggFreeSweets.random() }
             .filterNot { disLikedFood.contains(it) }
