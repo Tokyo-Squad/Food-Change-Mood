@@ -2,7 +2,6 @@ package org.example.data
 
 import org.example.logic.CsvRepository
 import org.example.model.Meal
-import kotlinx.datetime.LocalDate
 
 class CsvRepositoryImpl(
     private val csvMealReader: CsvMealReader,
@@ -10,7 +9,7 @@ class CsvRepositoryImpl(
 ) : CsvRepository {
 
     override fun getMeals(): List<Meal> {
-        return csvMealReader.readMeals()
+        return csvMealReader.readMealsFromFile()
             .mapNotNull(parser::parseLine)
             .toList()
     }

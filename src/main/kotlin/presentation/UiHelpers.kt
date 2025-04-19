@@ -1,31 +1,33 @@
 package org.example.presentation
 
-import org.example.logic.CsvRepository
-import org.example.logic.GetLargeGroupItalyMealUseCase
-import org.example.logic.GetMealsByAddDateUseCase
-import org.example.logic.PlayIngredientGameUseCase
-import org.example.logic.HighCalorieMealSuggestionUseCase
-import org.example.logic.GetIraqiMealsUseCase
-import org.example.logic.GymHelperUseCase
 import org.example.logic.*
 import viewMoreDetailsAboutSpecificMeal
 
 fun playIngredientGame(gameUseCase: PlayIngredientGameUseCase) {
-    // Play the game
     val result = gameUseCase.invoke { meal, options ->
         println("Guess an ingredient in '${meal.name}':")
 
-        // Display the options to the user
-        options.forEachIndexed { i, option -> println("${i + 1}. $option") }
+        options.forEachIndexed { index, option ->
+            println("${index + 1}. $option")
+        }
 
-        // Read the user's choice (e.g., via console input)
+        print("Enter your choice (1-${options.size}): ")
         val choice = readlnOrNull()?.toIntOrNull()
 
-        // Return the selected ingredient, or null if the input is invalid
-        options.getOrNull((choice ?: 1) - 1) // Default to the first option if invalid
+        options.getOrNull((choice ?: 1) - 1)
+        when {
+            choice == null -> {
+                println("Invalid input. Please enter a number.")
+                null
+            }
+            choice !in 1..options.size -> {
+                println("Please enter a number between 1 and ${options.size}.")
+                null
+            }
+            else -> options[choice - 1]
+        }
     }
 
-    // Print the final game result
     println("Game Over! Final Score: ${result.finalScore}, Correct Answers: ${result.correctAnswers}, Reason: ${result.message}")
 }
 
@@ -40,13 +42,15 @@ fun getMealsByName(getMealsByNameUseCase: GetMealsByNameUseCase) {
     } else {
         println("\nFound ${meals.size} meals:")
         meals.forEachIndexed { index, meal ->
-            println("""
+            println(
+                """
             ${index + 1}. ${meal.name}
                Time: ${meal.preparationTime} min
                Ingredients: ${meal.numberOfIngredients}
                Steps: ${meal.numberOfSteps}
                Tags: ${meal.tags.take(3).joinToString()}
-            """.trimIndent())
+            """.trimIndent()
+            )
         }
     }
 }
@@ -71,8 +75,8 @@ fun getMealsByAddDateConsole(getMealsByAddDateUseCase: GetMealsByAddDateUseCase)
 }
 
 
-fun guessGame(attempts: Int = 3, repo: CsvRepository) {
-    val meal = repo.getMeals().random()
+fun guessGame(attempts: Int = 3, getRandomMealUseCase: GetRandomMealUseCase) {
+    val meal = getRandomMealUseCase()
     var tries = attempts
 
     println("\n=== Time Guess: ${meal.name} ===")
@@ -146,6 +150,7 @@ fun showItalyLargeGroupMeals(largeGroupItalyMealUseCase: GetLargeGroupItalyMealU
                     println("You've reached the end of the list!")
                 }
             }
+
             "p" -> {
                 if (pageNumber > 0) {
                     pageNumber--
@@ -154,6 +159,7 @@ fun showItalyLargeGroupMeals(largeGroupItalyMealUseCase: GetLargeGroupItalyMealU
                     println("You're already on the first page!")
                 }
             }
+
             else -> {
                 println("Exiting...")
                 return
@@ -310,24 +316,25 @@ fun getSweetsWithNoEggs(useCase: SweetMealWithoutEggUseCase) {
 
 fun exploreFoodCulture(useCase: ExploreCountriesFoodCultureUseCase) {
     print("\n=== Food Culture Explorer ===\nEnter country name: ")
-
-    val meals = useCase.invoke(readLine() ?: return)
+    val countryInput = readlnOrNull()?.trim() ?: return
+    val meals = useCase(countryInput)
 
     if (meals.isEmpty()) {
         println("No meals found for this country.")
         return
     }
 
-    println("\nFound ${meals.size} meals:")
+    println("\nFound ${meals.size} ${countryInput.lowercase()} meals:")
     meals.forEachIndexed { i, meal ->
-        println("${i + 1}. ${meal.name} | ${meal.preparationTime}mins")
+        println("${i + 1}. ${meal.name} | ${meal.preparationTime} mins")
+        println("   Ingredients: ${meal.ingredients.take(3).joinToString()}...")
     }
 }
 
-fun getPotatoMeals(useCase: GetRandomPotatoMealsUseCase, repo: CsvRepository) {
+fun getPotatoMeals(useCase: GetRandomPotatoMealsUseCase) {
     println("\n=== Potato-Based Meals ===")
 
-    val potatoMeals = useCase.invoke(repo.getMeals())
+    val potatoMeals = useCase()
 
     if (potatoMeals.isEmpty()) {
         println("No potato meals found.")
@@ -339,10 +346,10 @@ fun getPotatoMeals(useCase: GetRandomPotatoMealsUseCase, repo: CsvRepository) {
     }
 }
 
-fun getSeafoodMealsByProtein(useCase: GetSeafoodMealsSortedByProteinUseCase, repo: CsvRepository) {
+fun getSeafoodMealsByProtein(useCase: GetSeafoodMealsSortedByProteinUseCase) {
     println("\n=== Seafood Meals by Protein Content ===")
 
-    val seafoodMeals = useCase.invoke(repo.getMeals())
+    val seafoodMeals = useCase()
 
     if (seafoodMeals.isEmpty()) {
         println("No seafood meals found.")
