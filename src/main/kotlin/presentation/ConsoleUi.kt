@@ -6,21 +6,22 @@ import org.example.utils.NoMealsFoundException
 import org.koin.java.KoinJavaComponent.getKoin
 
 class ConsoleUi {
-    private val healthyFastFoodUseCase = getKoin().get<GetHealthyFastFoodMealsUseCase>()
-    private val getMealsByNameUseCase= getKoin().get<GetMealsByNameUseCase>()
-    private val iraqiMealsUseCase = getKoin().get<GetIraqiMealsUseCase>()
-    private val easyFoodSuggestionUseCase = getKoin().get<EasyFoodSuggestionUseCase>()
-    private val sweetWithoutEggUseCase = getKoin().get<SweetMealWithoutEggUseCase>()
-    private val ketoDietHelperUseCase = getKoin().get<KetoDietMealHelperUseCase>()
-    private val mealsByAddDateUseCase = getKoin().get<GetMealsByAddDateUseCase>()
-    private val gymHelperUseCase = getKoin().get<GymHelperUseCase>()
-    private val exploreFoodCultureUseCase = getKoin().get<ExploreCountriesFoodCultureUseCase>()
-    private val ingredientGameUseCase = getKoin().get<PlayIngredientGameUseCase>()
-    private val potatoMealsUseCase = getKoin().get<GetRandomPotatoMealsUseCase>()
-    private val highCalorieMealUseCase = getKoin().get<HighCalorieMealSuggestionUseCase>()
-    private val seafoodMealsUseCase = getKoin().get<GetSeafoodMealsSortedByProteinUseCase>()
-    private val largeGroupItalyMealUseCase = getKoin().get<GetLargeGroupItalyMealUseCase>()
-    private val randomMeal = getKoin().get<GetRandomMealUseCase>()
+    val repo: CsvRepository = getKoin().get()
+    val healthyFastFoodUseCase = getKoin().get<GetHealthyFastFoodMealsUseCase>()
+    val getMealsByNameUseCase= getKoin().get<GetMealsByNameUseCase>()
+    val iraqiMealsUseCase = getKoin().get<GetIraqiMealsUseCase>()
+    val easyFoodSuggestionUseCase = getKoin().get<EasyFoodSuggestionUseCase>()
+    val sweetWithoutEggUseCase = getKoin().get<SweetMealWithoutEggUseCase>()
+    val ketoDietHelperUseCase = getKoin().get<KetoDietMealHelperUseCase>()
+    val mealsByAddDateUseCase = getKoin().get<GetMealsByAddDateUseCase>()
+    val gymHelperUseCase = getKoin().get<GymHelperUseCase>()
+    val exploreFoodCultureUseCase = getKoin().get<ExploreCountriesFoodCultureUseCase>()
+    val ingredientGameUseCase = getKoin().get<PlayIngredientGameUseCase>()
+    val potatoMealsUseCase = GetRandomPotatoMealsUseCase(csvRepository = repo)
+    val highCalorieMealUseCase = getKoin().get<HighCalorieMealSuggestionUseCase>()
+    val seafoodMealsUseCase = GetSeafoodMealsSortedByProteinUseCase(csvRepository = repo)
+    val largeGroupItalyMealUseCase = getKoin().get<GetLargeGroupItalyMealUseCase>()
+    val randomMealUseCase = getKoin().get<GetRandomMealUseCase>()
 
     fun start() {
         while (true) {
@@ -62,7 +63,7 @@ class ConsoleUi {
                 2 -> getMealsByNameConsole(getMealsByNameUseCase)
                 3 -> getIraqiMealsConsole(iraqiMealsUseCase)
                 4 -> getEasyFoodSuggestionConsole(easyFoodSuggestionUseCase)
-                5 -> guessGameConsole(3, randomMeal)
+                5 -> guessGameConsole(3, randomMealUseCase =randomMealUseCase )
                 6 -> getSweetsWithNoEggsConsole(sweetWithoutEggUseCase)
                 7 -> getKetoDietHelperConsole(ketoDietHelperUseCase)
                 8 -> getMealsByAddDateConsole(mealsByAddDateUseCase)
@@ -71,7 +72,7 @@ class ConsoleUi {
                 11 -> playIngredientGameConsole(ingredientGameUseCase)
                 12 -> getPotatoMealsConsole(potatoMealsUseCase) // will need a refactor to use UseCase only
                 13 -> getHighCalorieMealSuggestionConsole(highCalorieMealUseCase)
-                14 -> getSeafoodMealsByProteinConsole(seafoodMealsUseCase, )
+                14 -> getSeafoodMealsByProteinConsole(seafoodMealsUseCase)
                 15 -> showItalyLargeGroupMealsConsole(largeGroupItalyMealUseCase)
                 0 -> {
                     println("Thank you for using Food Change Mood! Goodbye!")
