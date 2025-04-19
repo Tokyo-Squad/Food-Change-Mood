@@ -1,8 +1,7 @@
 package org.example.presentation
 
 import org.example.presentation.controller.*
-import org.example.utils.InvalidDateFormatException
-import org.example.utils.NoMealsFoundException
+import org.example.utils.MealAppException
 
 
 class FoodApplicationUI(
@@ -49,10 +48,10 @@ class FoodApplicationUI(
     private fun executeWithPauseAndHandleErrors(action: () -> Unit) {
         try {
             action()
-        } catch (e: NoMealsFoundException) {
+        } catch (e: MealAppException.NoMealsFoundException) {
             println("\n⚠️ ${e.message}")
             println("Try different search criteria or choose another option.")
-        } catch (e: InvalidDateFormatException) {
+        } catch (e: MealAppException.InvalidDateFormatException) {
             println("\n⚠️ ${e.message}")
             println("Please use the format yyyy-MM-dd (e.g., 2023-12-31)")
         } catch (e: Exception) {

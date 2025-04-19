@@ -12,5 +12,6 @@ sealed class MealAppException(message: String) : Exception(message) {
 
     class FileNotFoundException(message: String) : MealAppException(message)
 
+    class NoSuchElementException(message: String = "No such element found.") : MealAppException(message)
 
 }

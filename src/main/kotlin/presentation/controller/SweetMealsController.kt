@@ -2,6 +2,7 @@ package org.example.presentation.controller
 
 import org.example.logic.SweetMealWithoutEggUseCase
 import org.example.presentation.io.ConsoleIO
+import org.example.utils.MealAppException
 import viewMoreDetailsAboutSpecificMeal
 
 class SweetMealsController(
@@ -30,7 +31,7 @@ class SweetMealsController(
                     "E" -> return
                     else -> io.printOutput("Invalid input! Try again.")
                 }
-            } catch (e: NoSuchElementException) {
+            } catch (e: MealAppException.NoSuchElementException) {
                 io.printOutput("No more egg-free sweets available.")
                 return
             }
