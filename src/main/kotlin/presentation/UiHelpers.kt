@@ -7,11 +7,25 @@ fun playIngredientGame(gameUseCase: PlayIngredientGameUseCase) {
     val result = gameUseCase.invoke { meal, options ->
         println("Guess an ingredient in '${meal.name}':")
 
-        options.forEachIndexed { i, option -> println("${i + 1}. $option") }
+        options.forEachIndexed { index, option ->
+            println("${index + 1}. $option")
+        }
 
+        print("Enter your choice (1-${options.size}): ")
         val choice = readlnOrNull()?.toIntOrNull()
 
         options.getOrNull((choice ?: 1) - 1)
+        when {
+            choice == null -> {
+                println("Invalid input. Please enter a number.")
+                null
+            }
+            choice !in 1..options.size -> {
+                println("Please enter a number between 1 and ${options.size}.")
+                null
+            }
+            else -> options[choice - 1]
+        }
     }
 
     println("Game Over! Final Score: ${result.finalScore}, Correct Answers: ${result.correctAnswers}, Reason: ${result.message}")
@@ -61,8 +75,8 @@ fun getMealsByAddDateConsole(getMealsByAddDateUseCase: GetMealsByAddDateUseCase)
 }
 
 
-fun guessGame(attempts: Int = 3, repo: CsvRepository) {
-    val meal = repo.getMeals().random()
+fun guessGame(attempts: Int = 3, getRandomMealUseCase: GetRandomMealUseCase) {
+    val meal = getRandomMealUseCase()
     var tries = attempts
 
     println("\n=== Time Guess: ${meal.name} ===")
@@ -320,7 +334,7 @@ fun exploreFoodCulture(useCase: ExploreCountriesFoodCultureUseCase) {
 fun getPotatoMeals(useCase: GetRandomPotatoMealsUseCase) {
     println("\n=== Potato-Based Meals ===")
 
-    val potatoMeals = useCase.invoke()
+    val potatoMeals = useCase()
 
     if (potatoMeals.isEmpty()) {
         println("No potato meals found.")
@@ -335,7 +349,7 @@ fun getPotatoMeals(useCase: GetRandomPotatoMealsUseCase) {
 fun getSeafoodMealsByProtein(useCase: GetSeafoodMealsSortedByProteinUseCase) {
     println("\n=== Seafood Meals by Protein Content ===")
 
-    val seafoodMeals = useCase.invoke()
+    val seafoodMeals = useCase()
 
     if (seafoodMeals.isEmpty()) {
         println("No seafood meals found.")

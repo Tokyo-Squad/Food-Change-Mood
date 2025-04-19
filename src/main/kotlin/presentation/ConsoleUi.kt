@@ -6,6 +6,7 @@ import org.example.utils.NoMealsFoundException
 import org.koin.java.KoinJavaComponent.getKoin
 
 class ConsoleUi {
+    val repo: CsvRepository = getKoin().get()
     val healthyFastFoodUseCase = getKoin().get<GetHealthyFastFoodMealsUseCase>()
     val getMealsByNameUseCase= getKoin().get<GetMealsByNameUseCase>()
     val iraqiMealsUseCase = getKoin().get<GetIraqiMealsUseCase>()
