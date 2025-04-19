@@ -8,7 +8,9 @@ import org.example.logic.EasyFoodSuggestionUseCase
 import org.example.logic.KetoDietMealHelperUseCase
 import org.example.logic.SweetMealWithoutEggUseCase
 import org.example.utils.MealSearchIndex
-import org.example.presentation.ConsoleUi
+import org.example.presentation.FoodApplicationUI
+import org.example.presentation.io.ConsoleIO
+import org.example.presentation.io.RealConsoleIO
 import org.koin.dsl.module
 
 val projectModule = module {
@@ -16,5 +18,5 @@ val projectModule = module {
     single { CsvMealParser() }
     single<CsvRepository> { CsvRepositoryImpl(get(), get()) }
     single { MealSearchIndex(get()) }
-    single { ConsoleUi() }
+    single<ConsoleIO>{RealConsoleIO()}
 }

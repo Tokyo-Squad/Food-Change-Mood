@@ -7,7 +7,6 @@ class GetMealsByNameUseCase(
     private val csvRepository: CsvRepository
 ) {
     operator fun invoke(query: String): List<Meal> {
-        println("--- please wait ---")
         return searchIndex.search(query)
     }
 

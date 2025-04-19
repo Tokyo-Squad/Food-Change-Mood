@@ -22,10 +22,12 @@ val useCaseModule = module {
     single { PlayIngredientGameUseCase(get()) }
     single { HighCalorieMealSuggestionUseCase(get()) }
     single { GetMealsByNameUseCase(get()) }
+    single { GetRandomPotatoMealsUseCase(get()) }
+    single { GetSeafoodMealsSortedByProteinUseCase(get()) }
     single { GetRandomMealUseCase(get()) }
     single { GenerateIngredientQuestionUseCase(get()) }
     single { KetoDietMealHelperUseCase(csvRepository = get()) }
-    single { EasyFoodSuggestionUseCase(get()) }
     single { GetRandomPotatoMealsUseCase(get()) }
     single { GetSeafoodMealsSortedByProteinUseCase(get()) }
+
 }
