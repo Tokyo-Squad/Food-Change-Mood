@@ -67,25 +67,29 @@ class FoodApplicationUI(
 
     private fun displayMenu() {
         println("""
-            Food Application Menu:
-            1. Easy Food Suggestions
-            2. Explore Food Culture
-            3. Gym Helper
-            4. Healthy Fast Food Meals
-            5. High Calorie Meal Suggestions
-            6. Ingredient Game
-            7. Iraqi Meals
-            8. Italy Large Group Meals
-            9. Keto Diet
-            10. Meals By Add Date
-            11. Meal Search
-            12. Potato Meals
-            13. Seafood Meals By Protein
-            14. Sweet Meals
-            0. Exit
-            
-            Enter your choice: 
-        """.trimIndent())
+        ╭─────────── Food Change Mood ───────────╮
+        │                                        │
+        │  1. Healthy Fast Food Meals           │
+        │  2. Meal Search                       │
+        │  3. Iraqi Meals                       │
+        │  4. Easy Food Suggestions             │
+        │  5. Ingredient Game                   │
+        │  6. Sweets with No Eggs              │
+        │  7. Keto Diet Meal Helper            │
+        │  8. Meals By Add Date                │
+        │  9. Gym Helper                       │
+        │  10. Explore Food Culture            │
+        │  11. Ingredient Game                 │
+        │  12. Potato Meals                    │
+        │  13. High Calorie Meals              │
+        │  14. Seafood Meals By Protein        │
+        │  15. Italy Large Group Meals         │
+        │                                        │
+        │  0. Exit                              │
+        ╰────────────────────────────────────────╯
+
+        Enter your choice (0-15): 
+    """.trimIndent())
     }
 
     private fun readMenuChoice(): Int {
