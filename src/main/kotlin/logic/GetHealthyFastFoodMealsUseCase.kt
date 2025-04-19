@@ -5,7 +5,7 @@ import org.example.model.Meal
 class GetHealthyFastFoodMealsUseCase(
     private val repository: CsvRepository
 ) {
-    fun getHealthyFastFoodMeals(): List<Meal> {
+    operator fun invoke(): List<Meal> {
         val allMeals = repository.getMeals()
 
         // Compute average values across the dataset

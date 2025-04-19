@@ -166,7 +166,7 @@ fun showItalyLargeGroupMeals(largeGroupItalyMealUseCase: GetLargeGroupItalyMealU
 fun getHealthyFastFoodMealsConsole(useCase: GetHealthyFastFoodMealsUseCase) {
     println("\n=== Healthy Fast Food Meals (15 mins or less) ===")
 
-    val result = useCase.getHealthyFastFoodMeals()
+    val result = useCase.invoke()
 
     if (result.isEmpty()) {
         println("No healthy fast food meals found.")
