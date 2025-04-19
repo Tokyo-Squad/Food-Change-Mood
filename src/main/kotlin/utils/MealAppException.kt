@@ -14,4 +14,7 @@ sealed class MealAppException(message: String) : Exception(message) {
 
     class NoSuchElementException(message: String = "No such element found.") : MealAppException(message)
 
+    class InvalidArgumentException(message: String = "Illegal argument provided.") : MealAppException(message)
+
+    class InvalidNumberFormatException(message: String = "Invalid number format.") : MealAppException(message)
 }
