@@ -1,6 +1,7 @@
 package org.example.data
 
 import com.opencsv.CSVReader
+import org.example.utils.MealAppException
 import java.io.File
 import java.io.FileReader
 import java.io.IOException
@@ -23,8 +24,7 @@ class CsvMealReader(private val fileName: String) {
             generateSequence { reader.readNext() }
 
         } catch (e: IOException) {
-            println("Error reading file: ${e.message}")
-            emptySequence()
+            throw MealAppException.FileReadException("Error reading file '$fileName': ${e.message}")
         }
     }
 }

@@ -3,6 +3,7 @@ package org.example.data
 import kotlinx.datetime.LocalDate
 import org.example.model.Meal
 import org.example.model.Nutrition
+import org.example.utils.MealAppException
 
 class CsvMealParser {
 
@@ -35,14 +36,20 @@ class CsvMealParser {
                 ingredients = parseStringList(line[MealIndex.INGREDIENTS]),
                 numberOfIngredients = line[MealIndex.N_INGREDIENTS].toInt()
             )
+        }  catch (e: NumberFormatException) {
+            throw MealAppException.MalformedCsvRowException("Invalid numeric value: ${e.message}")
         } catch (e: Exception) {
-            println("Error parsing line: ${line.joinToString(", ")} - ${e.message}")
-            null
+            throw MealAppException.MalformedCsvRowException("Unknown error parsing row: ${e.message}")
         }
     }
 
-    private fun parseSubmittedDate(rawDate: String): LocalDate =
-        LocalDate.parse(rawDate.trim())
+    private fun parseSubmittedDate(rawDate: String): LocalDate {
+        return try {
+            LocalDate.parse(rawDate.trim())
+        } catch (e: Exception) {
+            throw MealAppException.InvalidDateFormatException("Invalid date: '$rawDate'")
+        }
+    }
 
     private fun parseStringList(raw: String): List<String> =
         raw.removeSurrounding("[", "]")
