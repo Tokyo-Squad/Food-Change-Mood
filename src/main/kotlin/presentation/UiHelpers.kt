@@ -72,8 +72,8 @@ fun getMealsByAddDateConsole(getMealsByAddDateUseCase: GetMealsByAddDateUseCase)
 }
 
 
-fun guessGame(attempts: Int = 3, repo: CsvRepository) {
-    val meal = repo.getMeals().random()
+fun guessGame(attempts: Int = 3, getRandomMealUseCase: GetRandomMealUseCase) {
+    val meal = getRandomMealUseCase()
     var tries = attempts
 
     println("\n=== Time Guess: ${meal.name} ===")
