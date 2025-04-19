@@ -30,7 +30,7 @@ class GenerateIngredientQuestionUseCase(
 
     private fun getWrongIngredients(meals: List<Meal>, currentMeal: Meal, correct: String): List<String> {
         return meals.asSequence()
-            .flatMap { it.ingredients.asSequence() }
+            .flatMap { it.ingredients}
             .filter { it != correct && it !in currentMeal.ingredients }
             .distinct()
             .toList()
