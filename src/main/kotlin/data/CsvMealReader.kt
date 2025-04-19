@@ -7,9 +7,7 @@ import java.io.IOException
 
 class CsvMealReader(private val fileName: String) {
 
-    // This function will read meals from the CSV file
-    fun readMeals(): Sequence<Array<String>> {
-        // Check if the file exists before trying to read it
+    fun readMealsFromFile(): Sequence<Array<String>> {
         val file = File(fileName)
         if (!file.exists()) {
             println("Error: File '$fileName' does not exist.")
