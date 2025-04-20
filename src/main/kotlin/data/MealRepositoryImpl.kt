@@ -8,14 +8,17 @@ class MealRepositoryImpl(
     private val csvMealReader: CsvMealReader,
     private val parser: CsvMealParser
 ) : MealRepository {
+    private val meals = mutableListOf<Meal>()
 
     override fun getMeals(): List<Meal> {
+        if (meals.isNotEmpty()) return meals
         return try {
-            csvMealReader.readMealsFromFile()
-                .map { line ->
-                    parser.parseLine(line) ?: throw MealAppException.MalformedCsvRowException("Line is null after parsing.")
+            val parsedMeals = csvMealReader.readMealsFromFile().map { line ->
+                    parser.parseLine(line)
+                        ?: throw MealAppException.MalformedCsvRowException("Line is null after parsing.")
                 }
-                .toList()
+            meals.addAll(parsedMeals)
+            meals
         } catch (e: MealAppException.FileNotFoundException) {
             println(" File not found: ${e.message}")
             emptyList()
