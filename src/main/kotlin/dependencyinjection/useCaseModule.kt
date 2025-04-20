@@ -2,10 +2,10 @@ package org.example.dependencyinjection
 
 import org.example.logic.*
 import org.koin.dsl.module
-import org.example.logic.EasyFoodSuggestionUseCase
-import org.example.logic.GetMealsByAddDateUseCase
-import org.example.logic.SweetMealWithoutEggUseCase
-import org.example.logic.HighCalorieMealSuggestionUseCase
+import org.example.logic.usecase.EasyFoodSuggestionUseCase
+import org.example.logic.usecase.GetMealsByAddDateUseCase
+import org.example.logic.usecase.HighCalorieMealSuggestionUseCase
+import org.example.logic.usecase.*
 
 
 val useCaseModule = module {

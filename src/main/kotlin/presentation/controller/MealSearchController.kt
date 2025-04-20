@@ -1,6 +1,6 @@
 package org.example.presentation.controller
 
-import org.example.logic.GetMealsByNameUseCase
+import org.example.logic.usecase.GetMealsByNameUseCase
 import org.example.presentation.io.ConsoleIO
 
 class MealSearchController(

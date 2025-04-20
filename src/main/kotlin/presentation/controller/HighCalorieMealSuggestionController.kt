@@ -1,6 +1,6 @@
 package org.example.presentation.controller
 
-import org.example.logic.HighCalorieMealSuggestionUseCase
+import org.example.logic.usecase.HighCalorieMealSuggestionUseCase
 import org.example.presentation.io.ConsoleIO
 import viewMoreDetailsAboutSpecificMeal
 

@@ -1,10 +1,13 @@
-package org.example.logic
+package org.example.logic.usecase
 
+import org.example.logic.CalculatePercentage
+import org.example.logic.CsvRepository
+import org.example.logic.ReactionProvider
 import org.example.model.Meal
 
 class KetoDietMealHelperUseCase(
     private val csvRepository: CsvRepository,
-    ): CalculatePercentage, ReactionProvider{
+    ): CalculatePercentage, ReactionProvider {
 
     private val disLikedFood = mutableSetOf<Meal>()
     private val likedFood  = mutableSetOf<Meal>()

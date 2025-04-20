@@ -1,6 +1,6 @@
 package org.example.presentation.controller
 
-import org.example.logic.ExploreCountriesFoodCultureUseCase
+import org.example.logic.usecase.ExploreCountriesFoodCultureUseCase
 import org.example.presentation.io.ConsoleIO
 
 class ExploreFoodCultureController(

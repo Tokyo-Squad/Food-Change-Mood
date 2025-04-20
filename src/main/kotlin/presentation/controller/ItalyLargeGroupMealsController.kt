@@ -1,6 +1,6 @@
 package org.example.presentation.controller
 
-import org.example.logic.GetLargeGroupItalyMealUseCase
+import org.example.logic.usecase.GetLargeGroupItalyMealUseCase
 import org.example.presentation.io.ConsoleIO
 import kotlin.math.min
 

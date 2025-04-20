@@ -1,6 +1,6 @@
 package org.example.presentation.controller
 
-import org.example.logic.GetIraqiMealsUseCase
+import org.example.logic.usecase.GetIraqiMealsUseCase
 import org.example.presentation.io.ConsoleIO
 
 class IraqiMealsController(

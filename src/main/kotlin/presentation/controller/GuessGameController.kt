@@ -1,6 +1,6 @@
 package org.example.presentation.controller
 
-import org.example.logic.GetRandomMealUseCase
+import org.example.logic.usecase.GetRandomMealUseCase
 import org.example.presentation.io.ConsoleIO
 
 class GuessGameController(

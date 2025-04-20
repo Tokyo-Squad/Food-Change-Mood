@@ -1,6 +1,6 @@
 package org.example.presentation.controller
 
-import org.example.logic.GetMealsByAddDateUseCase
+import org.example.logic.usecase.GetMealsByAddDateUseCase
 import org.example.presentation.io.ConsoleIO
 import viewMoreDetailsAboutSpecificMeal
 
