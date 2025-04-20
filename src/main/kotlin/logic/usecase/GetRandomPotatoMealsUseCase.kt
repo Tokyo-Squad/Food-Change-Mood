@@ -1,14 +1,14 @@
 package org.example.logic.usecase
 
-import org.example.logic.CsvRepository
+import org.example.logic.repository.MealRepository
 import org.example.model.Meal
 import org.example.utils.randomElementsUnique
 
 class GetRandomPotatoMealsUseCase(
-    private val csvRepository: CsvRepository
+    private val mealRepository: MealRepository
 ) {
     operator fun invoke(randomSize: Int = 10): List<Meal> =
-        csvRepository.getMeals().filter { meal ->
+        mealRepository.getMeals().filter { meal ->
             meal.ingredients.any { ingredient ->
                 ingredient.contains("potato", ignoreCase = true) || ingredient.contains("potatoes", ignoreCase = true)
             }

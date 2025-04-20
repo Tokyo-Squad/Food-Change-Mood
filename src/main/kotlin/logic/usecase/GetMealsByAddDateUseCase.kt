@@ -1,12 +1,12 @@
 package org.example.logic.usecase
 
 import kotlinx.datetime.LocalDate
-import org.example.logic.CsvRepository
+import org.example.logic.repository.MealRepository
 import org.example.model.Meal
 import org.example.utils.MealAppException
 
 class GetMealsByAddDateUseCase(
-    private val repo: CsvRepository
+    private val repo: MealRepository
 ) {
     operator fun invoke(dateInput: String): Result<List<Meal>> {
         return try {

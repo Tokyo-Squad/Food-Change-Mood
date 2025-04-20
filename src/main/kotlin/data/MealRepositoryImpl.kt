@@ -1,13 +1,13 @@
 package org.example.data
 
-import org.example.logic.CsvRepository
+import org.example.logic.repository.MealRepository
 import org.example.model.Meal
 import org.example.utils.MealAppException
 
-class CsvRepositoryImpl(
+class MealRepositoryImpl(
     private val csvMealReader: CsvMealReader,
     private val parser: CsvMealParser
-) : CsvRepository {
+) : MealRepository {
 
     override fun getMeals(): List<Meal> {
         return try {

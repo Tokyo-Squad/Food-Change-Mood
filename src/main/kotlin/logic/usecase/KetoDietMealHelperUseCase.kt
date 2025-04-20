@@ -1,19 +1,19 @@
 package org.example.logic.usecase
 
-import org.example.logic.CalculatePercentage
-import org.example.logic.CsvRepository
-import org.example.logic.ReactionProvider
+import org.example.logic.repository.CalculatePercentage
+import org.example.logic.repository.MealRepository
+import org.example.logic.repository.ReactionProvider
 import org.example.model.Meal
 
 class KetoDietMealHelperUseCase(
-    private val csvRepository: CsvRepository,
+    private val mealRepository: MealRepository,
     ): CalculatePercentage, ReactionProvider {
 
     private val disLikedFood = mutableSetOf<Meal>()
     private val likedFood  = mutableSetOf<Meal>()
 
     operator fun invoke(): Meal {
-        val friendlyMeals = csvRepository.getMeals().filter { isKetoDietMeal(it) }
+        val friendlyMeals = mealRepository.getMeals().filter { isKetoDietMeal(it) }
          return generateSequence { friendlyMeals.random() }.filterNot { disLikedFood.contains(it) }.first()
     }
 

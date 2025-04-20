@@ -1,6 +1,6 @@
 package org.example.logic.usecase
 
-import org.example.logic.CsvRepository
+import org.example.logic.repository.MealRepository
 import org.example.model.Meal
 
 /**
@@ -8,11 +8,11 @@ import org.example.model.Meal
  * It returns a list of pairs where each pair contains an index (starting at 1) and a Meal.
  */
 class GetSeafoodMealsSortedByProteinUseCase(
-    private val csvRepository: CsvRepository
+    private val mealRepository: MealRepository
 ) {
 
     operator fun invoke(): List<Pair<Int, Meal>> {
-        val seafoodMeals = csvRepository.getMeals()
+        val seafoodMeals = mealRepository.getMeals()
             .filter(::isSeafoodMeal)
             .sortedByDescending { meal -> meal.nutrition.protein }
 

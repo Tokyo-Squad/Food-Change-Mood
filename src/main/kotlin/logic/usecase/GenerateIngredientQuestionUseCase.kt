@@ -1,12 +1,12 @@
 package org.example.logic.usecase
 
-import org.example.logic.CsvRepository
+import org.example.logic.repository.MealRepository
 import org.example.model.Meal
 import org.example.model.QuestionWithWrongAnswers
 import org.example.utils.randomElementsUnique
 
 class GenerateIngredientQuestionUseCase(
-    private val repository: CsvRepository
+    private val repository: MealRepository
 ) {
     companion object {
         private const val WRONG_ANSWERS = 2

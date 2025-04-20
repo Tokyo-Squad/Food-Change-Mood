@@ -1,10 +1,10 @@
 package org.example.logic.usecase
 
-import org.example.logic.CsvRepository
+import org.example.logic.repository.MealRepository
 import org.example.model.Meal
 
 class GymHelperUseCase(
-    private val csvRepository: CsvRepository
+    private val mealRepository: MealRepository
 ) {
     fun invoke(
         targetCalories: Float,
@@ -19,6 +19,6 @@ class GymHelperUseCase(
         }
     }
 
-    private fun getAllMeals(): List<Meal> = csvRepository.getMeals()
+    private fun getAllMeals(): List<Meal> = mealRepository.getMeals()
 
 }

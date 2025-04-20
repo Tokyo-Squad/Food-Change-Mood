@@ -1,13 +1,13 @@
 package org.example.logic.usecase
 
-import org.example.logic.CsvRepository
+import org.example.logic.repository.MealRepository
 import org.example.model.Meal
 
 class HighCalorieMealSuggestionUseCase(
-    private val csvRepository: CsvRepository
+    private val mealRepository: MealRepository
 ) {
     private val highCalorieMeals: List<Meal> by lazy {
-        csvRepository.getMeals().filter { it.nutrition.calories > 700 }
+        mealRepository.getMeals().filter { it.nutrition.calories > 700 }
     }
     private val suggestedMealIds = mutableSetOf<Int>()
 
