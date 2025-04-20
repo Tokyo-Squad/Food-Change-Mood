@@ -1,4 +1,4 @@
-package org.example.logic.repository
+package org.example.logic
 
 interface CalculatePercentage {
 
