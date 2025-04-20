@@ -1,9 +1,10 @@
-package org.example.logic
+package org.example.logic.usecase
 
+import org.example.logic.repository.MealRepository
 import org.example.model.Meal
 
 class GetHealthyFastFoodMealsUseCase(
-    private val repository: CsvRepository
+    private val repository: MealRepository
 ) {
     operator fun invoke(): List<Meal> {
         val allMeals = repository.getMeals()

@@ -1,6 +1,6 @@
 package org.example.presentation.controller
 
-import org.example.logic.GetRandomPotatoMealsUseCase
+import org.example.logic.usecase.GetRandomPotatoMealsUseCase
 import org.example.presentation.io.ConsoleIO
 
 class PotatoMealsController(

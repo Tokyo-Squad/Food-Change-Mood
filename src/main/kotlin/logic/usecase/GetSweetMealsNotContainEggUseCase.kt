@@ -1,4 +1,4 @@
-package org.example.logic
+package org.example.logic.usecase
 
 import org.example.model.Meal
 import org.example.utils.containAnyOf

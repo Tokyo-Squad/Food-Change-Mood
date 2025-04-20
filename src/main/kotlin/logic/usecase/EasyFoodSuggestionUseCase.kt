@@ -1,13 +1,14 @@
-package org.example.logic
+package org.example.logic.usecase
 
+import org.example.logic.repository.MealRepository
 import org.example.model.Meal
 
 class EasyFoodSuggestionUseCase(
-    private val csvRepository: CsvRepository,
+    private val mealRepository: MealRepository,
 ) {
 
     fun getEasyMeals(): List<Meal> {
-        return csvRepository.getMeals()
+        return mealRepository.getMeals()
             .filter { isEasyMeal(it) }
             .shuffled()
             .take(10)

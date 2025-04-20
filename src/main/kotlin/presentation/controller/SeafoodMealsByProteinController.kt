@@ -1,6 +1,6 @@
 package org.example.presentation.controller
 
-import org.example.logic.GetSeafoodMealsSortedByProteinUseCase
+import org.example.logic.usecase.GetSeafoodMealsSortedByProteinUseCase
 import org.example.presentation.io.ConsoleIO
 
 class SeafoodMealsByProteinController(

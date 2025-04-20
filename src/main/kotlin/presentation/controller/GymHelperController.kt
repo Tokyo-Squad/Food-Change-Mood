@@ -1,6 +1,6 @@
 package org.example.presentation.controller
 
-import org.example.logic.GymHelperUseCase
+import org.example.logic.usecase.GymHelperUseCase
 import org.example.presentation.io.ConsoleIO
 import org.example.utils.MealAppException
 import java.util.*

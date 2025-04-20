@@ -1,23 +1,23 @@
 package org.example.dependencyinjection
 
-import org.example.logic.*
+import org.example.logic.repository.MealRepository
 import org.koin.dsl.module
-import org.example.logic.EasyFoodSuggestionUseCase
-import org.example.logic.GetMealsByAddDateUseCase
-import org.example.logic.SweetMealWithoutEggUseCase
-import org.example.logic.HighCalorieMealSuggestionUseCase
+import org.example.logic.usecase.EasyFoodSuggestionUseCase
+import org.example.logic.usecase.GetMealsByAddDateUseCase
+import org.example.logic.usecase.HighCalorieMealSuggestionUseCase
+import org.example.logic.usecase.*
 
 
 val useCaseModule = module {
-    single { GetHealthyFastFoodMealsUseCase(get<CsvRepository>()) }
+    single { GetHealthyFastFoodMealsUseCase(get<MealRepository>()) }
     single { GetMealsByAddDateUseCase(get()) }
-    single { GetSweetMealUseCase(csvRepository = get()) }
+    single { GetSweetMealUseCase(mealRepository = get()) }
     single { GetSweetMealsNotContainEggUseCase(sweetMeal = get()) }
     single { SweetMealWithoutEggUseCase(sweetMealsNotContainEgg = get()) }
     single { EasyFoodSuggestionUseCase(get()) }
-    single { GetLargeGroupItalyMealUseCase(csvRepository = get()) }
-    single { GetIraqiMealsUseCase(csvRepository = get()) }
-    single { GymHelperUseCase(csvRepository = get()) }
+    single { GetLargeGroupItalyMealUseCase(mealRepository = get()) }
+    single { GetIraqiMealsUseCase(mealRepository = get()) }
+    single { GymHelperUseCase(mealRepository = get()) }
     single { ExploreCountriesFoodCultureUseCase(get()) }
     single { PlayIngredientGameUseCase(get()) }
     single { HighCalorieMealSuggestionUseCase(get()) }
@@ -26,7 +26,7 @@ val useCaseModule = module {
     single { GetSeafoodMealsSortedByProteinUseCase(get()) }
     single { GetRandomMealUseCase(get()) }
     single { GenerateIngredientQuestionUseCase(get()) }
-    single { KetoDietMealHelperUseCase(csvRepository = get()) }
+    single { KetoDietMealHelperUseCase(mealRepository = get()) }
     single { GetRandomPotatoMealsUseCase(get()) }
     single { GetSeafoodMealsSortedByProteinUseCase(get()) }
 

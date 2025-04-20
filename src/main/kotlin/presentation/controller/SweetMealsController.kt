@@ -1,6 +1,6 @@
 package org.example.presentation.controller
 
-import org.example.logic.SweetMealWithoutEggUseCase
+import org.example.logic.usecase.SweetMealWithoutEggUseCase
 import org.example.presentation.io.ConsoleIO
 import org.example.utils.MealAppException
 import viewMoreDetailsAboutSpecificMeal

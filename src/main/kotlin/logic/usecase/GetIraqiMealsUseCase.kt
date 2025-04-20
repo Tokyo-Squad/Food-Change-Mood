@@ -1,8 +1,9 @@
-package org.example.logic
+package org.example.logic.usecase
 
+import org.example.logic.repository.MealRepository
 import org.example.model.Meal
 
-class GetIraqiMealsUseCase(private val csvRepository: CsvRepository) {
+class GetIraqiMealsUseCase(private val mealRepository: MealRepository) {
 
     fun invoke(): List<Meal> {
         return getAllMeals().filter {
@@ -16,6 +17,6 @@ class GetIraqiMealsUseCase(private val csvRepository: CsvRepository) {
         return hasIraqiTag || containsIraqInDescription
     }
 
-    private fun getAllMeals(): List<Meal> = csvRepository.getMeals()
+    private fun getAllMeals(): List<Meal> = mealRepository.getMeals()
 
 }

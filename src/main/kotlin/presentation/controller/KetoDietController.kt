@@ -1,6 +1,6 @@
 package org.example.presentation.controller
 
-import org.example.logic.KetoDietMealHelperUseCase
+import org.example.logic.usecase.KetoDietMealHelperUseCase
 import org.example.presentation.io.ConsoleIO
 import viewMoreDetailsAboutSpecificMeal
 

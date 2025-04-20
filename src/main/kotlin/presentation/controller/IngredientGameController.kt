@@ -1,6 +1,6 @@
 package org.example.presentation.controller
 
-import org.example.logic.PlayIngredientGameUseCase
+import org.example.logic.usecase.PlayIngredientGameUseCase
 import org.example.presentation.io.ConsoleIO
 
 class IngredientGameController(

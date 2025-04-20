@@ -1,6 +1,6 @@
 package org.example.presentation.controller
 
-import org.example.logic.GetHealthyFastFoodMealsUseCase
+import org.example.logic.usecase.GetHealthyFastFoodMealsUseCase
 import org.example.presentation.io.ConsoleIO
 
 class HealthyFastFoodMealsController(

@@ -1,14 +1,15 @@
-package org.example.logic
+package org.example.logic.usecase
 
+import org.example.logic.repository.MealRepository
 import org.example.model.Meal
 import org.example.utils.containAnyOf
 
 class GetLargeGroupItalyMealUseCase(
-    private val csvRepository: CsvRepository
+    private val mealRepository: MealRepository
 ) {
 
     operator fun invoke(): List<Meal> {
-        return csvRepository.getMeals()
+        return mealRepository.getMeals()
             .filter(::isItalianMeal)
             .filter(::isSuitableForLargeGroups)
     }
