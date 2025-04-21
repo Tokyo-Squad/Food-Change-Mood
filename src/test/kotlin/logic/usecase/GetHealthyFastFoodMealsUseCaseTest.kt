@@ -8,12 +8,19 @@ import io.mockk.every
 import io.mockk.mockk
 import org.example.logic.repository.MealRepository
 import org.example.logic.usecase.GetHealthyFastFoodMealsUseCase
+import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
 class GetHealthyFastFoodMealsUseCaseTest {
 
- private val repository: MealRepository = mockk()
- private val useCase = GetHealthyFastFoodMealsUseCase(repository)
+ private lateinit var repository: MealRepository
+ private lateinit var useCase: GetHealthyFastFoodMealsUseCase
+
+ @BeforeEach
+ fun setUp() {
+  repository = mockk()
+  useCase = GetHealthyFastFoodMealsUseCase(repository)
+ }
 
  @Test
  fun `should return only healthy fast food meals with appropriate nutrition and preparation time when meals are available`() {
