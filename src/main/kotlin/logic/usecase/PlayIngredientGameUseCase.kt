@@ -2,6 +2,7 @@ package org.example.logic.usecase
 
 import org.example.model.IngredientGameResult
 import org.example.model.Meal
+import org.example.utils.MealAppException
 
 class PlayIngredientGameUseCase(
     private val generateQuestionUseCase: GenerateIngredientQuestionUseCase
@@ -14,17 +15,37 @@ class PlayIngredientGameUseCase(
     ): IngredientGameResult {
         var score = initialScore
         var correctCount = 0
+        var retries = 0
+        val maxRetries = 10
 
         while (correctCount < maxCorrectAnswers) {
-            val question = generateQuestionUseCase() ?: continue
+            try {
+                val question = generateQuestionUseCase()
+                val userAnswer = promptUser(question.meal, question.options)
 
-            val userAnswer = promptUser(question.meal, question.options)
+                if (userAnswer == question.correctAnswer) {
+                    score += pointsPerCorrect
+                    correctCount++
+                } else {
+                    return IngredientGameResult(score, correctCount, "Wrong answer. Correct was '${question.correctAnswer}'")
+                }
 
-            if (userAnswer == question.correctAnswer) {
-                score += pointsPerCorrect
-                correctCount++
-            } else {
-                return IngredientGameResult(score, correctCount, "Wrong answer. Correct was '${question.correctAnswer}'")
+            } catch (e: MealAppException.NoMealsAvailableException) {
+                return IngredientGameResult(
+                    score,
+                    correctCount,
+                    "Game stopped: ${e.message}"
+                )
+            } catch (e: MealAppException.InsufficientWrongAnswersException) {
+                retries++
+                if (retries >= maxRetries) {
+                    return IngredientGameResult(
+                        score,
+                        correctCount,
+                        "Game stopped: Too many failed attempts to generate a valid question."
+                    )
+                }
+                continue
             }
         }
 
