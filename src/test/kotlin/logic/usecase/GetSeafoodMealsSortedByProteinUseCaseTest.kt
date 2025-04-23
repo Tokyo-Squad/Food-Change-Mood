@@ -24,7 +24,7 @@ class GetSeafoodMealsSortedByProteinUseCaseTest {
     }
 
     @Test
-    fun `should return seafood meals from description sorted by protein in descending order`() {
+    fun `should sort seafood meals by protein in descending order when description contains seafood`() {
         // Given
         every { mealRepository.getMeals() } returns listOf(
             createMeal(
@@ -57,7 +57,7 @@ class GetSeafoodMealsSortedByProteinUseCaseTest {
     }
 
     @Test
-    fun `should return seafood meals from tags sorted by protein in descending order`() {
+    fun `should sort seafood meals by protein in descending order when tags contain seafood`() {
         // Given
         every { mealRepository.getMeals() } returns listOf(
             createMeal(
@@ -90,7 +90,7 @@ class GetSeafoodMealsSortedByProteinUseCaseTest {
     }
 
     @Test
-    fun `should return seafood meals from both description and tags sorted by protein`() {
+    fun `should sort seafood meals by protein when either description or tags contain seafood`() {
         // Given
         every { mealRepository.getMeals() } returns listOf(
             createMeal(
@@ -151,7 +151,7 @@ class GetSeafoodMealsSortedByProteinUseCaseTest {
     }
 
     @Test
-    fun `should handle empty repository data gracefully`() {
+    fun `should return empty list when repository is empty`() {
         // Given
         every { mealRepository.getMeals() } returns emptyList()
 
@@ -164,7 +164,7 @@ class GetSeafoodMealsSortedByProteinUseCaseTest {
     }
 
     @Test
-    fun `should handle meals with equal protein content by maintaining order`() {
+    fun `should maintain order when protein content is equal`() {
         // Given
         every { mealRepository.getMeals() } returns listOf(
             createMeal(
@@ -206,7 +206,7 @@ class GetSeafoodMealsSortedByProteinUseCaseTest {
             "Mixed seafood platter"
         ]
     )
-    fun `should detect seafood meals regardless of case in description`(seafoodVariant: String) {
+    fun `should detect seafood meals regardless of case when present in description`(seafoodVariant: String) {
         // Given
         every { mealRepository.getMeals() } returns listOf(
             createMeal(
@@ -242,7 +242,7 @@ class GetSeafoodMealsSortedByProteinUseCaseTest {
             "fresh-seafood"
         ]
     )
-    fun `should detect seafood meals regardless of case in tags`(seafoodVariant: String) {
+    fun `should detect seafood meals regardless of case when present in tags`(seafoodVariant: String) {
         // Given
         every { mealRepository.getMeals() } returns listOf(
             createMeal(
@@ -277,7 +277,7 @@ class GetSeafoodMealsSortedByProteinUseCaseTest {
             "seefood"
         ]
     )
-    fun `should not detect terms that are not actually seafood`(nonSeafoodVariant: String) {
+    fun `should not detect non-seafood terms when description variants similar to seafood are used`(nonSeafoodVariant: String) {
         // Given
         every { mealRepository.getMeals() } returns listOf(
             createMeal(
@@ -302,7 +302,7 @@ class GetSeafoodMealsSortedByProteinUseCaseTest {
     }
 
     @Test
-    fun `should correctly assign sequential indices starting from 1`() {
+    fun `should assign sequential indices starting from 1 when meals are sorted`() {
         // Given
         every { mealRepository.getMeals() } returns listOf(
             createMeal(
