@@ -64,3 +64,75 @@ fun createNutrition(
         carbohydrates = carbohydrates
     )
 }
+
+fun listOfMoreThenTenMeals():List<Meal>{
+    return  listOf(
+        createMeal(
+            id = 1,
+            name = "Single Healthy Burger",
+            preparationTime = 8,
+            numberOfIngredients = 3,
+            numberOfSteps = 3,
+        ), createMeal(
+            id = 2,
+            name = "Single Unhealthy Burger",
+            preparationTime = 12,
+            numberOfIngredients = 3,
+            numberOfSteps = 3,
+        ), createMeal(
+            id = 3,
+            name = "Cheese Healthy Salad",
+            preparationTime = 14,
+            numberOfIngredients = 5,
+            numberOfSteps = 5,
+        ), createMeal(
+            id = 4,
+            name = "Double Healthy Burger",
+            preparationTime = 12,
+            numberOfIngredients = 4,
+            numberOfSteps = 3,
+        ), createMeal(
+            id = 5,
+            name = "Treble Unhealthy Burger",
+            preparationTime = 12,
+            numberOfIngredients = 3,
+            numberOfSteps = 3,
+        ), createMeal(
+            id = 6,
+            name = "Cheese Healthy Salad",
+            preparationTime = 13,
+            numberOfIngredients = 2,
+            numberOfSteps = 5,
+        ), createMeal(
+            id = 7,
+            name = "Treble Healthy Burger",
+            preparationTime = 11,
+            numberOfIngredients = 4,
+            numberOfSteps = 5,
+        ), createMeal(
+            id = 8,
+            name = "Single Unhealthy Burger",
+            preparationTime = 12,
+            numberOfIngredients = 3,
+            numberOfSteps = 3,
+        ), createMeal(
+            id = 9,
+            name = "mamo",
+            preparationTime = 14,
+            numberOfIngredients = 2,
+            numberOfSteps = 4,
+        ), createMeal(
+            id = 10,
+            name = "Baffalo Unhealthy Burger",
+            preparationTime = 12,
+            numberOfIngredients = 3,
+            numberOfSteps = 3,
+        ), createMeal(
+            id = 11,
+            name = "pizza",
+            preparationTime = 14,
+            numberOfIngredients = 5,
+            numberOfSteps = 3,
+        )
+    )
+}

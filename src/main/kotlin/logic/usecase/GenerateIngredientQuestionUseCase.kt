@@ -3,6 +3,7 @@ package org.example.logic.usecase
 import org.example.logic.repository.MealRepository
 import org.example.model.Meal
 import org.example.model.QuestionWithWrongAnswers
+import org.example.utils.MealAppException
 import org.example.utils.randomElementsUnique
 
 class GenerateIngredientQuestionUseCase(
@@ -16,14 +17,19 @@ class GenerateIngredientQuestionUseCase(
         repository.getMeals().filter { it.ingredients.isNotEmpty() }
     }
 
-    operator fun invoke(): QuestionWithWrongAnswers? {
+    operator fun invoke(): QuestionWithWrongAnswers {
+
+        if (meals.isEmpty()) {
+            throw MealAppException.NoMealsAvailableException("No meals available in the repository.")
+        }
         val meal = meals.random()
         val correct = meal.ingredients.random()
 
         val wrong = getWrongIngredients(meals, meal, correct)
 
-        if (wrong.size < WRONG_ANSWERS) return null
-
+        if (wrong.size < WRONG_ANSWERS) {
+            throw MealAppException.InsufficientWrongAnswersException("Not enough wrong ingredient options.")
+        }
         val options = prepareOptions(correct, wrong)
 
         return QuestionWithWrongAnswers(meal, correct, options)

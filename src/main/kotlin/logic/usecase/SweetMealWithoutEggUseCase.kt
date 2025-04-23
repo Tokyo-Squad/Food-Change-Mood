@@ -1,6 +1,6 @@
 package org.example.logic.usecase
 
-import org.example.logic.repository.ReactionProvider
+import org.example.logic.ReactionProvider
 import org.example.model.Meal
 import org.example.utils.MealAppException
 
