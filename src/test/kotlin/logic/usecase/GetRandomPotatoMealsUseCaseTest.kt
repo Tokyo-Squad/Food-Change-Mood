@@ -23,7 +23,7 @@ class GetRandomPotatoMealsUseCaseTest {
     }
 
     @Test
-    fun `should return meals containing potato in ingredients`() {
+    fun `should return meals containing potato in ingredients when ingredients contain potato`() {
         // Given
         every { mealRepository.getMeals() } returns listOf(
             createMeal(id = 1, ingredients = listOf("potato", "salt")),
@@ -53,7 +53,7 @@ class GetRandomPotatoMealsUseCaseTest {
             "Potatoes",
         ]
     )
-    fun `should detect potato ingredients regardless of case and format`(potatoVariant: String) {
+    fun `should detect potato ingredients regardless of case and format when ingredients contain variant potato`(potatoVariant: String) {
         // Given
         every { mealRepository.getMeals() } returns listOf(
             createMeal(id = 1, ingredients = listOf(potatoVariant, "salt")),
@@ -88,7 +88,7 @@ class GetRandomPotatoMealsUseCaseTest {
     }
 
     @Test
-    fun `should limit returned meals to randomSize parameter`() {
+    fun `should limit returned meals to randomSize parameter when randomSize is specified`() {
         // Given
         every { mealRepository.getMeals() } returns listOf(
             createMeal(id = 1, ingredients = listOf("potato", "salt")),
@@ -125,7 +125,7 @@ class GetRandomPotatoMealsUseCaseTest {
     }
 
     @Test
-    fun `should detect potato ingredient regardless of case or position in word`() {
+    fun `should detect potato ingredient regardless of case or position in word when ingredients contain substring potato`() {
         // Given
         every { mealRepository.getMeals() } returns listOf(
             createMeal(id = 1, ingredients = listOf("POTATO", "salt")),
@@ -158,7 +158,7 @@ class GetRandomPotatoMealsUseCaseTest {
     }
 
     @Test
-    fun `should handle empty repository data gracefully`() {
+    fun `should handle empty repository data gracefully when repository has no meals`() {
         // Given
         every { mealRepository.getMeals() } returns emptyList()
 
@@ -171,7 +171,7 @@ class GetRandomPotatoMealsUseCaseTest {
     }
 
     @Test
-    fun `should consider ingredients with multiple words containing potato`() {
+    fun `should consider ingredients with multiple words containing potato when ingredients include multi-word potato phrases`() {
         // Given
         every { mealRepository.getMeals() } returns listOf(
             createMeal(id = 1, ingredients = listOf("mashed potato with herbs", "salt")),
