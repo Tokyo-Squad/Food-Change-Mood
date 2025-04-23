@@ -14,238 +14,259 @@ import kotlin.test.assertFailsWith
 
 class GenerateIngredientQuestionUseCaseTest {
 
- private lateinit var repository: MealRepository
- private lateinit var useCase: GenerateIngredientQuestionUseCase
+    private lateinit var repository: MealRepository
+    private lateinit var useCase: GenerateIngredientQuestionUseCase
 
- @BeforeTest
- fun setup() {
-  repository = mockk()
- }
+    @BeforeTest
+    fun setup() {
+        repository = mockk()
+    }
 
- @Test
- fun `should generate a question containing correct and wrong answers when given a list of meals`() {
-  // Given
-  val pizza = createMeal(
-   id = 1,
-   name = "Pizza",
-   ingredients = listOf("Cheese", "Tomato Sauce", "Dough")
-  )
+    @Test
+    fun `should exclude correct meal's ingredients from wrong options when given a list of meals`() {
+        // Given
+        val pizza = createMeal(
+            id = 1,
+            name = "Pizza",
+            ingredients = listOf("Cheese", "Tomato Sauce", "Dough")
+        )
 
-  val salad = createMeal(
-   id = 2,
-   name = "Salad",
-   ingredients = listOf("Lettuce", "Cucumber", "Olive Oil")
-  )
+        val salad = createMeal(
+            id = 2,
+            name = "Salad",
+            ingredients = listOf("Lettuce", "Cucumber", "Olive Oil")
+        )
 
-  every { repository.getMeals() } returns listOf(pizza, salad)
-  useCase = GenerateIngredientQuestionUseCase(repository)
+        every { repository.getMeals() } returns listOf(pizza, salad)
+        useCase = GenerateIngredientQuestionUseCase(repository)
 
-  // When
-   val question: QuestionWithWrongAnswers = useCase()
+        // When
+        val question: QuestionWithWrongAnswers = useCase()
 
-   // Then
-   val wrongOptions = question.options.filterNot { it == question.correctAnswer }
-   assertThat(wrongOptions).containsNoneIn(question.meal.ingredients)
- }
+        // Then
+        val wrongOptions = question.options.filterNot { it == question.correctAnswer }
+        assertThat(wrongOptions).containsNoneIn(question.meal.ingredients)
+    }
 
- @Test
- fun `should generate a question containing the correct answer and the correct number of options when repository returns meals`() {
-  // Given
-  val pizza = createMeal(
-   id = 1,
-   name = "Pizza",
-   ingredients = listOf("Cheese", "Tomato Sauce", "Dough")
-  )
+    @Test
+    fun `should include the correct answer among the options when given meals with one empty ingredients list`() {
+        // Given
+        val pizza = createMeal(
+            id = 1,
+            name = "Pizza",
+            ingredients = listOf("Cheese", "Tomato Sauce", "Dough")
+        )
+        val salad = createMeal(
+            id = 2,
+            name = "Salad",
+            ingredients = listOf("Lettuce", "Cucumber", "Olive Oil")
+        )
+        val emptyMeal = createMeal(
+            id = 3,
+            name = "Empty Meal",
+            ingredients = emptyList()
+        )
+        every { repository.getMeals() } returns listOf(pizza, salad, emptyMeal)
+        val useCase = GenerateIngredientQuestionUseCase(repository)
 
-  val salad = createMeal(
-   id = 2,
-   name = "Salad",
-   ingredients = listOf("Lettuce", "Cucumber", "Olive Oil")
-  )
+        // When
+        val question = useCase()
 
-  every { repository.getMeals() } returns listOf(pizza, salad)
-  useCase = GenerateIngredientQuestionUseCase(repository)
+        // Then
+        assertThat(question.options).contains(question.correctAnswer)
+    }
 
-  // When
-  val question: QuestionWithWrongAnswers = useCase()
 
-  // Then
-  assertThat(question).isNotNull()
-  assertThat(question.options).contains(question.correctAnswer)
-  assertThat(question.options).hasSize(3)
- }
+    @Test
+    fun `should generate a question containing the correct answer when repository returns meals`() {
+        // Given
+        val pizza = createMeal(
+            id = 1,
+            name = "Pizza",
+            ingredients = listOf("Cheese", "Tomato Sauce", "Dough")
+        )
 
- @Test
- fun `should generate a question containing the correct answer when given a list of meals`() {
-  // Given
-  val pizza = createMeal(
-   id = 1,
-   name = "Pizza",
-   ingredients = listOf("Cheese", "Tomato Sauce", "Dough")
-  )
+        val salad = createMeal(
+            id = 2,
+            name = "Salad",
+            ingredients = listOf("Lettuce", "Cucumber", "Olive Oil")
+        )
 
-  val salad = createMeal(
-   id = 2,
-   name = "Salad",
-   ingredients = listOf("Lettuce", "Cucumber", "Olive Oil")
-  )
+        every { repository.getMeals() } returns listOf(pizza, salad)
+        useCase = GenerateIngredientQuestionUseCase(repository)
 
-  every { repository.getMeals() } returns listOf(pizza, salad)
-  useCase = GenerateIngredientQuestionUseCase(repository)
+        // When
+        val question: QuestionWithWrongAnswers = useCase()
 
-  // When
-  val question: QuestionWithWrongAnswers = useCase()
+        // Then
+        assertThat(question.options).contains(question.correctAnswer)
+    }
 
-  // Then
-  assertThat(question.options).contains(question.correctAnswer)
- }
+    @Test
+    fun `should return exactly three options when given meals with one empty ingredients list`() {
+        // Given
+        val pizza = createMeal(
+            id = 1,
+            name = "Pizza",
+            ingredients = listOf("Cheese", "Tomato Sauce", "Dough")
+        )
+        val salad = createMeal(
+            id = 2,
+            name = "Salad",
+            ingredients = listOf("Lettuce", "Cucumber", "Olive Oil")
+        )
+        val emptyMeal = createMeal(
+            id = 3,
+            name = "Empty Meal",
+            ingredients = emptyList()
+        )
+        every { repository.getMeals() } returns listOf(pizza, salad, emptyMeal)
+        val useCase = GenerateIngredientQuestionUseCase(repository)
 
- @Test
- fun `should generate a question containing correct and wrong answers when meals share ingredients`() {
-  // Given
-  val pizza = createMeal(
-   id = 1,
-   name = "Pizza",
-   ingredients = listOf("Cheese", "Tomato Sauce", "Dough")
-  )
+        // When
+        val question = useCase()
 
-  val pasta = createMeal(
-   id = 2,
-   name = "Pasta",
-   ingredients = listOf("Cheese", "Tomato Sauce", "Spaghetti")
-  )
+        // Then
+        assertThat(question.options).hasSize(3)
+    }
 
-  val salad = createMeal(
-   id = 3,
-   name = "Salad",
-   ingredients = listOf("Lettuce", "Cucumber", "Olive Oil")
-  )
+    @Test
+    fun `should generate a question containing the correct answer when given a list of meals`() {
+        // Given
+        val pizza = createMeal(
+            id = 1,
+            name = "Pizza",
+            ingredients = listOf("Cheese", "Tomato Sauce", "Dough")
+        )
 
-  every { repository.getMeals() } returns listOf(pizza, pasta, salad)
-  useCase = GenerateIngredientQuestionUseCase(repository)
+        val salad = createMeal(
+            id = 2,
+            name = "Salad",
+            ingredients = listOf("Lettuce", "Cucumber", "Olive Oil")
+        )
 
-  // When
-  val question: QuestionWithWrongAnswers = useCase()
+        every { repository.getMeals() } returns listOf(pizza, salad)
+        useCase = GenerateIngredientQuestionUseCase(repository)
 
-  // Then
-  val wrongOptions = question.options.filterNot { it == question.correctAnswer }
-  assertThat(wrongOptions).containsNoneIn(question.meal.ingredients)
-  assertThat(wrongOptions).doesNotContain("Cheese")
- }
+        // When
+        val question: QuestionWithWrongAnswers = useCase()
 
- @Test
- fun `should generate a question containing correct and wrong answers when given a list of meals with one meal having empty ingredients`() {
-  // Given
-  val pizza = createMeal(
-   id = 1,
-   name = "Pizza",
-   ingredients = listOf("Cheese", "Tomato Sauce", "Dough")
-  )
+        // Then
+        assertThat(question.options).contains(question.correctAnswer)
+    }
 
-  val salad = createMeal(
-   id = 2,
-   name = "Salad",
-   ingredients = listOf("Lettuce", "Cucumber", "Olive Oil")
-  )
+    @Test
+    fun `should exclude shared ingredients like Cheese from wrong options when meals share ingredients`() {
+        // Given
+        val pizza = createMeal(
+            id = 1,
+            name = "Pizza",
+            ingredients = listOf("Cheese", "Tomato Sauce", "Dough")
+        )
 
-  val emptyMeal = createMeal(
-   id = 3,
-   name = "Empty Meal",
-   ingredients = emptyList()
-  )
+        val pasta = createMeal(
+            id = 2,
+            name = "Pasta",
+            ingredients = listOf("Cheese", "Tomato Sauce", "Spaghetti")
+        )
 
-  every { repository.getMeals() } returns listOf(pizza, salad, emptyMeal)
-  useCase = GenerateIngredientQuestionUseCase(repository)
+        val salad = createMeal(
+            id = 3,
+            name = "Salad",
+            ingredients = listOf("Lettuce", "Cucumber", "Olive Oil")
+        )
 
-  // When
-   val question: QuestionWithWrongAnswers = useCase()
+        every { repository.getMeals() } returns listOf(pizza, pasta, salad)
+        val useCase = GenerateIngredientQuestionUseCase(repository)
 
-   // Then
-   assertThat(question).isNotNull()
-   assertThat(question.options).hasSize(3)
-   assertThat(question.options).contains(question.correctAnswer)
+        // When
+        val question: QuestionWithWrongAnswers = useCase()
+        val wrongOptions = question.options.filterNot { it == question.correctAnswer }
 
-   val wrongOptions = question.options.filterNot { it == question.correctAnswer }
-   assertThat(wrongOptions).containsNoneIn(question.meal.ingredients)
- }
+        // Then
+        assertThat(wrongOptions).doesNotContain("Cheese")
+    }
 
- @Test
- fun `should throw InsufficientWrongAnswersException when there are not enough wrong ingredients`() {
-  // Given
-  val onlyOneMeal = createMeal(
-   id = 1,
-   ingredients = listOf("Ingredient1", "Ingredient2")
-  )
+    @Test
+    fun `should throw InsufficientWrongAnswersException when there are not enough wrong ingredients`() {
+        // Given
+        val onlyOneMeal = createMeal(
+            id = 1,
+            ingredients = listOf("Ingredient1", "Ingredient2")
+        )
 
-  every { repository.getMeals() } returns listOf(onlyOneMeal)
-  useCase = GenerateIngredientQuestionUseCase(repository)
+        every { repository.getMeals() } returns listOf(onlyOneMeal)
+        useCase = GenerateIngredientQuestionUseCase(repository)
 
-  // When / Then
-  val exception = assertFailsWith<MealAppException.InsufficientWrongAnswersException> {
-   useCase()
-  }
-  assertThat(exception.message).isEqualTo("Not enough wrong ingredient options.")
- }
+        // When
+        val exception = assertFailsWith<MealAppException.InsufficientWrongAnswersException> {
+            useCase()
+        }
+        // Then
+        assertThat(exception.message).isEqualTo("Not enough wrong ingredient options.")
+    }
 
- @Test
- fun `should throw InsufficientWrongAnswersException when there are not enough unique wrong ingredients`() {
-  // Given
-  val meal1 = createMeal(
-   id = 1,
-   ingredients = listOf("Cheese", "Tomato", "Dough")
-  )
+    @Test
+    fun `should throw InsufficientWrongAnswersException when there are not enough unique wrong ingredients`() {
+        // Given
+        val meal1 = createMeal(
+            id = 1,
+            ingredients = listOf("Cheese", "Tomato", "Dough")
+        )
 
-  val meal2 = createMeal(
-   id = 2,
-   ingredients = listOf("Cheese", "Tomato") // Shares all ingredients with meal1
-  )
+        val meal2 = createMeal(
+            id = 2,
+            ingredients = listOf("Cheese", "Tomato") // Shares all ingredients with meal1
+        )
 
-  every { repository.getMeals() } returns listOf(meal1, meal2)
-  useCase = GenerateIngredientQuestionUseCase(repository)
+        every { repository.getMeals() } returns listOf(meal1, meal2)
+        useCase = GenerateIngredientQuestionUseCase(repository)
 
-  // When / Then
-  val exception = assertFailsWith<MealAppException.InsufficientWrongAnswersException> {
-   useCase()
-  }
-  assertThat(exception.message).isEqualTo("Not enough wrong ingredient options.")
- }
+        // When
+        val exception = assertFailsWith<MealAppException.InsufficientWrongAnswersException> {
+            useCase()
+        }
+        // Then
+        assertThat(exception.message).isEqualTo("Not enough wrong ingredient options.")
+    }
 
- @Test
- fun `should throw NoMealsAvailableException when repository fails and returns an empty list`() {
-  // Given
-  every { repository.getMeals() } returns emptyList()
+    @Test
+    fun `should throw NoMealsAvailableException when repository fails and returns an empty list`() {
+        // Given
+        every { repository.getMeals() } returns emptyList()
 
-  useCase = GenerateIngredientQuestionUseCase(repository)
+        useCase = GenerateIngredientQuestionUseCase(repository)
 
-  // When / Then
-  val exception = assertFailsWith<MealAppException.NoMealsAvailableException> {
-   useCase()
-  }
-  assertThat(exception.message).isEqualTo("No meals available in the repository.")
- }
+        // When
+        val exception = assertFailsWith<MealAppException.NoMealsAvailableException> {
+            useCase()
+        }
+        // Then
+        assertThat(exception.message).isEqualTo("No meals available in the repository.")
+    }
 
- @Test
- fun `should throw InsufficientWrongAnswersException when not enough wrong ingredients are available`() {
-  // Given
-  val pizza = createMeal(
-   id = 1,
-   name = "Pizza",
-   ingredients = listOf("Cheese", "Tomato Sauce", "Dough")
-  )
+    @Test
+    fun `should throw InsufficientWrongAnswersException when not enough wrong ingredients are available`() {
+        // Given
+        val pizza = createMeal(
+            id = 1,
+            name = "Pizza",
+            ingredients = listOf("Cheese", "Tomato Sauce", "Dough")
+        )
 
-  val pasta = createMeal(
-   id = 2,
-   name = "Pasta",
-   ingredients = listOf("Cheese", "Tomato Sauce", "Spaghetti")
-  )
-  // When
-  every { repository.getMeals() } returns listOf(pizza, pasta)
-  useCase = GenerateIngredientQuestionUseCase(repository)
+        val pasta = createMeal(
+            id = 2,
+            name = "Pasta",
+            ingredients = listOf("Cheese", "Tomato Sauce", "Spaghetti")
+        )
+        // When
+        every { repository.getMeals() } returns listOf(pizza, pasta)
+        useCase = GenerateIngredientQuestionUseCase(repository)
 
-  // Then
-  val exception = assertFailsWith<MealAppException.InsufficientWrongAnswersException> {
-   useCase()
-  }
-  assertThat(exception).hasMessageThat().isEqualTo("Not enough wrong ingredient options.")
- }
+        // Then
+        val exception = assertFailsWith<MealAppException.InsufficientWrongAnswersException> {
+            useCase()
+        }
+        assertThat(exception).hasMessageThat().isEqualTo("Not enough wrong ingredient options.")
+    }
 }
