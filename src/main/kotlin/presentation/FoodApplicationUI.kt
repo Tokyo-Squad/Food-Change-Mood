@@ -5,40 +5,27 @@ import org.example.utils.MealAppException
 
 
 class FoodApplicationUI(
-    private val easyFoodSuggestionController: EasyFoodSuggestionController,
-    private val exploreFoodCultureController: ExploreFoodCultureController,
-    private val gymHelperController: GymHelperController,
-    private val healthyFastFoodMealsController: HealthyFastFoodMealsController,
-    private val highCalorieMealSuggestionController: HighCalorieMealSuggestionController,
-    private val ingredientGameController: IngredientGameController,
-    private val iraqiMealsController: IraqiMealsController,
-    private val italyLargeGroupMealsController: ItalyLargeGroupMealsController,
-    private val ketoDietController: KetoDietController,
-    private val mealsByAddDateController: MealsByAddDateController,
-    private val mealSearchController: MealSearchController,
-    private val potatoMealsController: PotatoMealsController,
-    private val seafoodMealsByProteinController: SeafoodMealsByProteinController,
-    private val sweetMealsController: SweetMealsController
+    private val foodController: FoodController
 ) {
     fun start() {
         while (true) {
             displayMenu()
             when (readMenuChoice()) {
-                1 -> executeWithPauseAndHandleErrors { healthyFastFoodMealsController.display() }
-                2 -> executeWithPauseAndHandleErrors { mealSearchController.display() }
-                3 -> executeWithPauseAndHandleErrors { iraqiMealsController.display() }
-                4 -> executeWithPauseAndHandleErrors { easyFoodSuggestionController.display() }
-                5 -> executeWithPauseAndHandleErrors { ingredientGameController.display() }
-                6 -> executeWithPauseAndHandleErrors { sweetMealsController.displayEggFreeSweets() }
-                7 -> executeWithPauseAndHandleErrors { ketoDietController.display() }
-                8 -> executeWithPauseAndHandleErrors { mealsByAddDateController.display() }
-                9 -> executeWithPauseAndHandleErrors { gymHelperController.display() }
-                10 -> executeWithPauseAndHandleErrors { exploreFoodCultureController.display() }
-                11 -> executeWithPauseAndHandleErrors { ingredientGameController.display() }
-                12 -> executeWithPauseAndHandleErrors { potatoMealsController.display() }
-                13 -> executeWithPauseAndHandleErrors { highCalorieMealSuggestionController.display() }
-                14 -> executeWithPauseAndHandleErrors { seafoodMealsByProteinController.display() }
-                15 -> executeWithPauseAndHandleErrors { italyLargeGroupMealsController.display() }
+                1 -> executeWithPauseAndHandleErrors { foodController.healthyFastFoodMealsController.display() }
+                2 -> executeWithPauseAndHandleErrors { foodController.mealSearchController.display() }
+                3 -> executeWithPauseAndHandleErrors { foodController.iraqiMealsController.display() }
+                4 -> executeWithPauseAndHandleErrors { foodController.easyFoodSuggestionController.display() }
+                5 -> executeWithPauseAndHandleErrors { foodController.ingredientGameController.display() }
+                6 -> executeWithPauseAndHandleErrors { foodController.sweetMealsController.displayEggFreeSweets() }
+                7 -> executeWithPauseAndHandleErrors { foodController.ketoDietController.display() }
+                8 -> executeWithPauseAndHandleErrors { foodController.mealsByAddDateController.display() }
+                9 -> executeWithPauseAndHandleErrors { foodController.gymHelperController.display() }
+                10 -> executeWithPauseAndHandleErrors { foodController.exploreFoodCultureController.display() }
+                11 -> executeWithPauseAndHandleErrors { foodController.ingredientGameController.display() }
+                12 -> executeWithPauseAndHandleErrors { foodController.potatoMealsController.display() }
+                13 -> executeWithPauseAndHandleErrors { foodController.highCalorieMealSuggestionController.display() }
+                14 -> executeWithPauseAndHandleErrors { foodController.seafoodMealsByProteinController.display() }
+                15 -> executeWithPauseAndHandleErrors { foodController.italyLargeGroupMealsController.display() }
                 0 -> break
                 else -> println("Invalid choice. Please try again.")
             }
@@ -65,7 +52,8 @@ class FoodApplicationUI(
 
 
     private fun displayMenu() {
-        println("""
+        println(
+            """
         ╭─────────── Food Change Mood ───────────╮
         │                                        │
         │  1. Healthy Fast Food Meals           │
@@ -88,7 +76,8 @@ class FoodApplicationUI(
         ╰────────────────────────────────────────╯
 
         Enter your choice (0-15): 
-    """.trimIndent())
+    """.trimIndent()
+        )
     }
 
     private fun readMenuChoice(): Int {
