@@ -28,4 +28,6 @@ class SweetMealWithoutEggUseCase(
     override fun dislike(meal: Meal) {
         disLikedFood.add(meal)
     }
+    internal fun getLikedFood(): Set<Meal> = likedFood
+    internal fun getDislikedFood(): Set<Meal> = disLikedFood
 }
