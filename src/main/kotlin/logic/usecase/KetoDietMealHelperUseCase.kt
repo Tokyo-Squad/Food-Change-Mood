@@ -51,6 +51,7 @@ class KetoDietMealHelperUseCase(
     override fun dislike(meal: Meal){
         disLikedFood.add(meal)
     }
-
+    internal fun getLikedMeal() = likedFood
+    internal fun getDisLikedMeal() = disLikedFood
 
 }
