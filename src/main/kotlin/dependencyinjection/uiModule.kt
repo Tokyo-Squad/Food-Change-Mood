@@ -1,6 +1,7 @@
 package org.example.dependencyinjection
 
 import org.example.presentation.FoodApplicationUI
+import org.example.presentation.FoodController
 import org.example.presentation.controller.*
 import org.koin.dsl.module
 
@@ -20,7 +21,7 @@ val uiModule = module {
     single { SeafoodMealsByProteinController(get(), get()) }
     single { SweetMealsController(get(), get()) }
     single {
-        FoodApplicationUI(
+        FoodController(
             get(), get(), get(),
             get(), get(), get(),
             get(), get(), get(),
@@ -28,4 +29,5 @@ val uiModule = module {
             get(), get()
         )
     }
+    single { FoodApplicationUI(get()) }
 }
