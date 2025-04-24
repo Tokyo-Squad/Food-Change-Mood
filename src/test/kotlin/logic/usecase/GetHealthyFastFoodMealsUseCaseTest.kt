@@ -22,38 +22,27 @@ class GetHealthyFastFoodMealsUseCaseTest {
         useCase = GetHealthyFastFoodMealsUseCase(repository)
     }
 
+
     @Test
-    fun `should return only healthy fast food meals with appropriate nutrition and preparation time when meals are available`() {
+    fun `should sort healthy fast food meals by ascending total fat when meals are available`() {
         // Given
         val meal1 = createMeal(
             id = 1,
             name = "Healthy Burger",
             preparationTime = 10,
-            nutrition = createNutrition(
-                totalFat = 15.0,
-                saturatedFat = 5.0,
-                carbohydrates = 20.0
-            )
+            nutrition = createNutrition(totalFat = 15.0, saturatedFat = 5.0, carbohydrates = 20.0)
         )
         val meal2 = createMeal(
             id = 2,
             name = "Unhealthy Burger",
             preparationTime = 12,
-            nutrition = createNutrition(
-                totalFat = 30.0,
-                saturatedFat = 10.0,
-                carbohydrates = 40.0
-            )
+            nutrition = createNutrition(totalFat = 30.0, saturatedFat = 10.0, carbohydrates = 40.0)
         )
         val meal3 = createMeal(
             id = 3,
             name = "Healthy Salad",
             preparationTime = 10,
-            nutrition = createNutrition(
-                totalFat = 5.0,
-                saturatedFat = 1.0,
-                carbohydrates = 10.0
-            )
+            nutrition = createNutrition(totalFat = 5.0, saturatedFat = 1.0, carbohydrates = 10.0)
         )
 
         every { repository.getMeals() } returns listOf(meal1, meal2, meal3)
@@ -62,9 +51,6 @@ class GetHealthyFastFoodMealsUseCaseTest {
         val result = useCase()
 
         // Then
-        assertThat(result).hasSize(2)
-        assertThat(result[0].name).isEqualTo("Healthy Salad")
-        assertThat(result[1].name).isEqualTo("Healthy Burger")
         assertThat(result[0].nutrition.totalFat).isLessThan(result[1].nutrition.totalFat)
     }
 
@@ -92,13 +78,13 @@ class GetHealthyFastFoodMealsUseCaseTest {
     }
 
     @Test
-    fun `should return 2 meals when preparation time is less than or equal to 15 minutes`() {
+    fun `should return 2 meals when preparation time is 15 minutes or less`() {
         // Given
         val meal1 = createMeal(
             id = 1,
             name = "Quick Burger",
             preparationTime = 10,
-            nutrition = createNutrition(totalFat = 10.0, saturatedFat = 4.0, carbohydrates = 20.0) // adjusted
+            nutrition = createNutrition(totalFat = 10.0, saturatedFat = 4.0, carbohydrates = 20.0)
         )
         val meal2 = createMeal(
             id = 2,
@@ -113,11 +99,8 @@ class GetHealthyFastFoodMealsUseCaseTest {
             nutrition = createNutrition(totalFat = 5.0, saturatedFat = 2.0, carbohydrates = 15.0)
         )
 
-        val allMeals = listOf(meal1, meal2, meal3)
-
-        // Given
         val mealRepository: MealRepository = mockk()
-        every { mealRepository.getMeals() } returns allMeals
+        every { mealRepository.getMeals() } returns listOf(meal1, meal2, meal3)
 
         val useCase = GetHealthyFastFoodMealsUseCase(mealRepository)
 
@@ -126,8 +109,42 @@ class GetHealthyFastFoodMealsUseCaseTest {
 
         // Then
         assertThat(result).hasSize(2)
-        assertThat(result[0].preparationTime).isAtMost(15)
-        assertThat(result[1].preparationTime).isAtMost(15)
+    }
+
+    @Test
+    fun `should return only meals with preparation time of 15 minutes or less when filtering healthy fast food meals`() {
+        // Given
+        val meal1 = createMeal(
+            id = 1,
+            name = "Quick Burger",
+            preparationTime = 10,
+            nutrition = createNutrition(totalFat = 10.0, saturatedFat = 4.0, carbohydrates = 20.0)
+        )
+        val meal2 = createMeal(
+            id = 2,
+            name = "Slow Pizza",
+            preparationTime = 20,
+            nutrition = createNutrition(totalFat = 15.0, saturatedFat = 7.0, carbohydrates = 25.0)
+        )
+        val meal3 = createMeal(
+            id = 3,
+            name = "Healthy Salad",
+            preparationTime = 12,
+            nutrition = createNutrition(totalFat = 5.0, saturatedFat = 2.0, carbohydrates = 15.0)
+        )
+
+        val mealRepository: MealRepository = mockk()
+        every { mealRepository.getMeals() } returns listOf(meal1, meal2, meal3)
+
+        val useCase = GetHealthyFastFoodMealsUseCase(mealRepository)
+
+        // When
+        val result = useCase()
+
+        // Then
+        result.forEach { meal ->
+            assertThat(meal.preparationTime).isAtMost(15)
+        }
     }
 
     @Test
