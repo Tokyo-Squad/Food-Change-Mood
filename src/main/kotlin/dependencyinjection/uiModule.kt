@@ -29,5 +29,5 @@ val uiModule = module {
             get(), get()
         )
     }
-    single { FoodApplicationUI(get()) }
+    single { FoodApplicationUI(get(),get()) }
 }
