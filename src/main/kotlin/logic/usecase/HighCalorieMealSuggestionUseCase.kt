@@ -12,8 +12,8 @@ class HighCalorieMealSuggestionUseCase(
     private val suggestedMealIds = mutableSetOf<Int>()
 
     fun getNextSuggestion(): Meal? {
-        val unsuggestedMeals = highCalorieMeals.filter { !suggestedMealIds.contains(it.id) }
-        val suggestion = if (unsuggestedMeals.isEmpty()) null else unsuggestedMeals.random()
+        val unSuggestedMeals = highCalorieMeals.filter { !suggestedMealIds.contains(it.id) }
+        val suggestion = if (unSuggestedMeals.isEmpty()) null else unSuggestedMeals.random()
         suggestion?.let { suggestedMealIds.add(it.id) }
         return suggestion
     }

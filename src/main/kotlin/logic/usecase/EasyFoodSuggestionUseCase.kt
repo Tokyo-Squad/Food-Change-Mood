@@ -2,6 +2,7 @@ package org.example.logic.usecase
 
 import org.example.logic.repository.MealRepository
 import org.example.model.Meal
+import org.example.utils.randomElementsUnique
 
 class EasyFoodSuggestionUseCase(
     private val mealRepository: MealRepository,
@@ -10,8 +11,7 @@ class EasyFoodSuggestionUseCase(
     fun getEasyMeals(): List<Meal> {
         return mealRepository.getMeals()
             .filter { isEasyMeal(it) }
-            .shuffled()
-            .take(10)
+            .randomElementsUnique(10)
     }
 
     private fun isEasyMeal(meal: Meal): Boolean {

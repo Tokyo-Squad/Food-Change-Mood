@@ -10,7 +10,6 @@ class ExploreCountriesFoodCultureUseCase(
 ) {
 
     operator fun invoke(country: String): List<Meal> {
-        println("--- please wait ---")
         val normalizedCountry = preprocessForFuzzySearch(country)
         return mealRepository.getMeals()
             .filter { meal ->
