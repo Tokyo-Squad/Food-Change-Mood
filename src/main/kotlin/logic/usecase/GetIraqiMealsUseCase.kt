@@ -12,7 +12,7 @@ class GetIraqiMealsUseCase(private val mealRepository: MealRepository) {
     }
 
     private fun isIraqiMeal(meal: Meal): Boolean {
-        return hasIraqiTag(meal) || containsIraqInDescription(meal)
+        return hasIraqiTag(meal) || isContainsIraqInDescription(meal)
     }
 
     private fun hasIraqiTag(meal: Meal): Boolean {
@@ -20,7 +20,7 @@ class GetIraqiMealsUseCase(private val mealRepository: MealRepository) {
 
     }
 
-    private fun containsIraqInDescription(meal: Meal): Boolean {
+    private fun isContainsIraqInDescription(meal: Meal): Boolean {
         return meal.description?.equals("iraq", ignoreCase = true) ?: false
     }
 
