@@ -45,7 +45,7 @@ class GuessGameControllerTest {
     }
 
     @Test
-    fun `should print correct message and end when guess is correct`() {
+    fun `should end with correct message when guess is correct on first attemp`() {
         every { io.readInput(any()) } returns "30"
 
         controller.playGame(attempts = 3)
@@ -56,7 +56,37 @@ class GuessGameControllerTest {
             io.printOutput("Correct! 30 mins.")
         }
     }
+    @Test
+    fun `should end with correct message when guess is correct on second attempt`() {
+        every { io.readInput(any()) } returnsMany listOf("20", "30")
 
+        controller.playGame(attempts = 3)
+
+        verifySequence {
+            io.printOutput("\n=== Time Guess: Test Meal ===")
+            io.readInput("Guess mins (3 tries left): ")
+            io.printOutput("Too low!")
+            io.readInput("Guess mins (2 tries left): ")
+            io.printOutput("Correct! 30 mins.")
+        }
+    }
+
+    @Test
+    fun `should end with correct message when guess is correct on third attempt`() {
+        every { io.readInput(any()) } returnsMany listOf("20", "40", "30")
+
+        controller.playGame(attempts = 3)
+
+        verifySequence {
+            io.printOutput("\n=== Time Guess: Test Meal ===")
+            io.readInput("Guess mins (3 tries left): ")
+            io.printOutput("Too low!")
+            io.readInput("Guess mins (2 tries left): ")
+            io.printOutput("Too high!")
+            io.readInput("Guess mins (1 tries left): ")
+            io.printOutput("Correct! 30 mins.")
+        }
+    }
     @Test
     fun `should give hints and end after all attempts when guesses are incorrect`() {
         every { io.readInput(any()) } returnsMany listOf("20", "40", "25")
