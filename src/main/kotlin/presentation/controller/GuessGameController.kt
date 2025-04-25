@@ -13,9 +13,10 @@ class GuessGameController(
 
         io.printOutput("\n=== Time Guess: ${meal.name} ===")
 
-        while (tries-- > 0) {
+        while (tries > 0) {
             // Ask the user for the guess.
             val input = io.readInput("Guess mins ($tries tries left): ")
+            tries--
             when (val guess = input?.toIntOrNull()) {
                 null -> io.printOutput("Numbers only!")
                 meal.preparationTime -> {
