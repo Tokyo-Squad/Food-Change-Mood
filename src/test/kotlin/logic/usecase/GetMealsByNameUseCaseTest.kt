@@ -21,7 +21,7 @@ class GetMealsByNameUseCaseTest {
     }
 
     @Test
-    fun `should return exact name matches`() {
+    fun `should return when there is exact name matches`() {
         every { mealRepository.getMeals() } returns listOf(
             createMeal(1, name = "Cheeseburger"),
             createMeal(2, name = "Salad")
@@ -44,7 +44,7 @@ class GetMealsByNameUseCaseTest {
     }
 
     @Test
-    fun `should order results by relevance score`() {
+    fun `should order results  when there is relevance score`() {
         every { mealRepository.getMeals() } returns listOf(
             createMeal(1, name = "Burger King"),
             createMeal(2, name = "Cheeseburger"),
@@ -57,7 +57,7 @@ class GetMealsByNameUseCaseTest {
     }
 
     @Test
-    fun `should ignore case differences`() {
+    fun `should ignore when case differences`() {
         every { mealRepository.getMeals() } returns listOf(
             createMeal(1, name = "Cheeseburger")
         )
@@ -68,7 +68,7 @@ class GetMealsByNameUseCaseTest {
     }
 
     @Test
-    fun `should handle special characters in query`() {
+    fun `should handle special characters when there is in query`() {
         every { mealRepository.getMeals() } returns listOf(
             createMeal(1, name = "Café Latte")
         )
@@ -79,7 +79,7 @@ class GetMealsByNameUseCaseTest {
     }
 
     @Test
-    fun `should return empty list for no matches`() {
+    fun `should return empty list when no matches`() {
         every { mealRepository.getMeals() } returns listOf(
             createMeal(1, name = "Pizza")
         )
@@ -90,7 +90,7 @@ class GetMealsByNameUseCaseTest {
     }
 
     @Test
-    fun `should limit results to maxResults parameter`() {
+    fun `should limit results when there is maxResults parameter`() {
         every { mealRepository.getMeals() } returns List(30) {
             createMeal(1, name = "Burger $it")
         }
@@ -101,7 +101,7 @@ class GetMealsByNameUseCaseTest {
     }
 
     @Test
-    fun `should return all meals for very short queries`() {
+    fun `should return all meals when there is very short queries`() {
         every { mealRepository.getMeals() } returns listOf(
             createMeal(1, name = "Cheese"),
             createMeal(2, name = "Chicken")
@@ -113,7 +113,7 @@ class GetMealsByNameUseCaseTest {
     }
 
     @Test
-    fun `should handle empty repository`() {
+    fun `should handle when there is empty repository`() {
         every { mealRepository.getMeals() } returns emptyList()
 
         val result = useCase("Burger")
@@ -122,7 +122,7 @@ class GetMealsByNameUseCaseTest {
     }
 
     @Test
-    fun `should match partial words`() {
+    fun `should match when there is partial words`() {
         every { mealRepository.getMeals() } returns listOf(
             createMeal(1, name = "Cheeseburger")
         )
@@ -133,7 +133,7 @@ class GetMealsByNameUseCaseTest {
     }
 
     @Test
-    fun `should handle empty query by returning empty list`() {
+    fun `should handle empty query when there is returning empty list`() {
         val mockMeals = listOf(
             createMeal(id = 1, name = "Cheeseburger"),
             createMeal(id = 2, name = "Pizza")
