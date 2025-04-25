@@ -34,7 +34,7 @@ class MealSearchIndex(private val meals: List<Meal>) {
      * @return List of matching meals sorted by relevance
      */
     fun search(query: String, maxResults: Int = 20): List<Meal> {
-        if (query == "") {
+        if (query.isBlank()) {
             throw MealAppException.InvalidArgumentException()
         }
         val normalizedQuery = preprocessForFuzzySearch(query)

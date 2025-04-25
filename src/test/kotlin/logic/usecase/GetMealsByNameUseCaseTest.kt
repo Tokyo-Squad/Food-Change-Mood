@@ -21,7 +21,7 @@ class GetMealsByNameUseCaseTest {
     }
 
     @Test
-    fun `should return when there is exact name matches`() {
+    fun `should return one meal when there is exact name matches`() {
         every { mealRepository.getMeals() } returns listOf(
             createMeal(1, name = "Cheeseburger"),
             createMeal(2, name = "Salad")
