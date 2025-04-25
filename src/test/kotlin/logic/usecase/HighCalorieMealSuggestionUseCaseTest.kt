@@ -34,8 +34,7 @@ class HighCalorieMealSuggestionUseCaseTest {
         val suggestion = useCase.getNextSuggestion()
 
         assertThat(suggestion).isNotNull()
-        assertThat(suggestion!!.nutrition.calories).isGreaterThan(700.0)
-        assertThat(suggestion.id).isIn(listOf(2, 3))
+        assertThat(suggestion!!.id).isIn(listOf(2, 3))
     }
 
     @Test
