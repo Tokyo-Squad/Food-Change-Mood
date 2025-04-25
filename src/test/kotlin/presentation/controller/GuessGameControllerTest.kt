@@ -11,7 +11,6 @@ import org.example.presentation.controller.GuessGameController
 import org.example.presentation.io.ConsoleIO
 import org.junit.jupiter.api.Test
 
-import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.BeforeEach
 
 class GuessGameControllerTest {
