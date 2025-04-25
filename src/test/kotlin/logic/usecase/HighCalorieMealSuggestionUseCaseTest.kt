@@ -84,7 +84,6 @@ class HighCalorieMealSuggestionUseCaseTest {
             suggestion?.let { suggestedMealIds.add(it.id) }
         }
 
-        assertThat(suggestedMealIds).hasSize(2)
         assertThat(suggestedMealIds).containsExactlyElementsIn(setOf(2, 3))
     }
 
