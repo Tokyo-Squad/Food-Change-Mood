@@ -71,3 +71,9 @@ private fun generateUniqueRandomIndices(
     return indices
 }
 
+fun Meal.allSearchFields(): List<String> =
+    listOf(name) + tags + ingredients
+
+fun String.toWords(): List<String> =
+    lowercase().split(Regex("\\s+"))
+
