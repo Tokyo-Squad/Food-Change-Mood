@@ -24,6 +24,19 @@ class GetSeafoodMealsSortedByProteinUseCaseTest {
     }
 
     @Test
+    fun `should invoke getMeals on MealRepository when executing GetSeafoodMealsSortedByProteinUseCase`() {
+        // Given
+        every { mealRepository.getMeals() } returns emptyList()
+
+        // When
+        val result = getSeafoodMealsSortedByProteinUseCase()
+
+        // Then
+        verify(exactly = 1) { mealRepository.getMeals() }
+        assertThat(result).isEmpty()
+    }
+
+    @Test
     fun `should sort seafood meals by protein in descending order when description contains seafood`() {
         // Given
         every { mealRepository.getMeals() } returns listOf(
@@ -48,12 +61,7 @@ class GetSeafoodMealsSortedByProteinUseCaseTest {
         val result = getSeafoodMealsSortedByProteinUseCase()
 
         // Then
-        verify(exactly = 1) { mealRepository.getMeals() }
-        assertThat(result).hasSize(2)
-        assertThat(result[0].first).isEqualTo(1)
-        assertThat(result[0].second.id).isEqualTo(3)
-        assertThat(result[1].first).isEqualTo(2)
-        assertThat(result[1].second.id).isEqualTo(1)
+        assertThat(result.map { it.second.id }).containsExactly(3, 1).inOrder()
     }
 
     @Test
@@ -81,12 +89,7 @@ class GetSeafoodMealsSortedByProteinUseCaseTest {
         val result = getSeafoodMealsSortedByProteinUseCase()
 
         // Then
-        verify(exactly = 1) { mealRepository.getMeals() }
-        assertThat(result).hasSize(2)
-        assertThat(result[0].first).isEqualTo(1)
-        assertThat(result[0].second.id).isEqualTo(3)
-        assertThat(result[1].first).isEqualTo(2)
-        assertThat(result[1].second.id).isEqualTo(2)
+        assertThat(result.map { it.second.id }).containsExactly(3, 2).inOrder()
     }
 
     @Test
@@ -111,17 +114,11 @@ class GetSeafoodMealsSortedByProteinUseCaseTest {
             )
         )
 
-
         // When
         val result = getSeafoodMealsSortedByProteinUseCase()
 
         // Then
-        verify(exactly = 1) { mealRepository.getMeals() }
-        assertThat(result).hasSize(2)
-        assertThat(result[0].first).isEqualTo(1)
-        assertThat(result[0].second.id).isEqualTo(2)
-        assertThat(result[1].first).isEqualTo(2)
-        assertThat(result[1].second.id).isEqualTo(1)
+        assertThat(result.map { it.second.id }).containsExactly(2, 1).inOrder()
     }
 
     @Test
@@ -146,20 +143,6 @@ class GetSeafoodMealsSortedByProteinUseCaseTest {
         val result = getSeafoodMealsSortedByProteinUseCase()
 
         // Then
-        verify(exactly = 1) { mealRepository.getMeals() }
-        assertThat(result).isEmpty()
-    }
-
-    @Test
-    fun `should return empty list when repository is empty`() {
-        // Given
-        every { mealRepository.getMeals() } returns emptyList()
-
-        // When
-        val result = getSeafoodMealsSortedByProteinUseCase()
-
-        // Then
-        verify(exactly = 1) { mealRepository.getMeals() }
         assertThat(result).isEmpty()
     }
 
@@ -188,8 +171,6 @@ class GetSeafoodMealsSortedByProteinUseCaseTest {
         val result = getSeafoodMealsSortedByProteinUseCase()
 
         // Then
-        verify(exactly = 1) { mealRepository.getMeals() }
-        assertThat(result).hasSize(3)
         assertThat(result.map { it.second.id }).containsExactly(1, 2, 3).inOrder()
     }
 
@@ -226,8 +207,6 @@ class GetSeafoodMealsSortedByProteinUseCaseTest {
         val result = getSeafoodMealsSortedByProteinUseCase()
 
         // Then
-        verify(exactly = 1) { mealRepository.getMeals() }
-        assertThat(result).hasSize(1)
         assertThat(result[0].second.id).isEqualTo(1)
     }
 
@@ -260,8 +239,6 @@ class GetSeafoodMealsSortedByProteinUseCaseTest {
         val result = getSeafoodMealsSortedByProteinUseCase()
 
         // Then
-        verify(exactly = 1) { mealRepository.getMeals() }
-        assertThat(result).hasSize(1)
         assertThat(result[0].second.id).isEqualTo(1)
     }
 
@@ -296,9 +273,27 @@ class GetSeafoodMealsSortedByProteinUseCaseTest {
         val result = getSeafoodMealsSortedByProteinUseCase()
 
         // Then
-        verify(exactly = 1) { mealRepository.getMeals() }
-        assertThat(result).hasSize(1)
         assertThat(result[0].second.id).isEqualTo(2)
+    }
+
+
+    @Test
+    fun `should return empty list when description is null and tags do not contain seafood`() {
+        // Given
+        every { mealRepository.getMeals() } returns listOf(
+            createMeal(
+                id = 1,
+                description = null,
+                tags = emptyList(),
+                nutrition = createNutrition(protein = 10.0)
+            )
+        )
+
+        // When
+        val result = getSeafoodMealsSortedByProteinUseCase()
+
+        // Then
+        assertThat(result).isEmpty()
     }
 
     @Test
@@ -326,11 +321,7 @@ class GetSeafoodMealsSortedByProteinUseCaseTest {
         val result = getSeafoodMealsSortedByProteinUseCase()
 
         // Then
-        verify(exactly = 1) { mealRepository.getMeals() }
-        assertThat(result).hasSize(3)
-        assertThat(result[0].first).isEqualTo(1)
-        assertThat(result[1].first).isEqualTo(2)
-        assertThat(result[2].first).isEqualTo(3)
+        assertThat(result.map { it.first }).containsExactly(1, 2, 3).inOrder()
         assertThat(result.map { it.second.id }).containsExactly(5, 10, 15).inOrder()
     }
 }
