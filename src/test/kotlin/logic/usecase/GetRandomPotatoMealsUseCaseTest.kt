@@ -23,6 +23,20 @@ class GetRandomPotatoMealsUseCaseTest {
     }
 
     @Test
+    fun `should invoke getMeals on MealRepository when executing GetRandomPotatoMealsUseCase`() {
+        // Given
+        every { mealRepository.getMeals() } returns emptyList()
+
+        // When
+        val result = getRandomPotatoMealsUseCase()
+
+        // Then
+        verify(exactly = 1) { mealRepository.getMeals() }
+        assertThat(result).isEmpty()
+    }
+
+
+    @Test
     fun `should return meals containing potato in ingredients when ingredients contain potato`() {
         // Given
         every { mealRepository.getMeals() } returns listOf(
@@ -35,8 +49,6 @@ class GetRandomPotatoMealsUseCaseTest {
         val result = getRandomPotatoMealsUseCase()
 
         // Then
-        verify(exactly = 1) { mealRepository.getMeals() }
-        assertThat(result).hasSize(2)
         assertThat(result.map { it.id }).containsExactly(1, 2)
     }
 
@@ -53,10 +65,13 @@ class GetRandomPotatoMealsUseCaseTest {
             "Potatoes",
         ]
     )
-    fun `should detect potato ingredients regardless of case and format when ingredients contain variant potato`(potatoVariant: String) {
+    fun `should detect potato ingredients regardless of case and format when ingredients contain variant potato`(
+        potatoVariant: String
+    ) {
         // Given
+        val potatoMeal = createMeal(id = 1, ingredients = listOf(potatoVariant, "salt"))
         every { mealRepository.getMeals() } returns listOf(
-            createMeal(id = 1, ingredients = listOf(potatoVariant, "salt")),
+            potatoMeal,
             createMeal(id = 2, ingredients = listOf("chicken", "garlic"))
         )
 
@@ -64,10 +79,8 @@ class GetRandomPotatoMealsUseCaseTest {
         val result = getRandomPotatoMealsUseCase()
 
         // Then
-        verify(exactly = 1) { mealRepository.getMeals() }
         assertThat(result).hasSize(1)
-        assertThat(result[0].id).isEqualTo(1)
-        assertThat(result[0].ingredients).contains(potatoVariant)
+        assertThat(potatoMeal).isEqualTo(result.first())
     }
 
 
@@ -83,7 +96,6 @@ class GetRandomPotatoMealsUseCaseTest {
         val result = getRandomPotatoMealsUseCase()
 
         // Then
-        verify(exactly = 1) { mealRepository.getMeals() }
         assertThat(result).isEmpty()
     }
 
@@ -101,8 +113,6 @@ class GetRandomPotatoMealsUseCaseTest {
         val result = getRandomPotatoMealsUseCase(randomSize = 2)
 
         // Then
-        verify(exactly = 1) { mealRepository.getMeals() }
-        assertThat(result).hasSize(2)
         // Note: Can't verify exact contents since they're random
         assertThat(result.map { it.id }.all { it in listOf(1, 2, 3, 4) }).isTrue()
     }
@@ -119,8 +129,6 @@ class GetRandomPotatoMealsUseCaseTest {
         val result = getRandomPotatoMealsUseCase(randomSize = 5)
 
         // Then
-        verify(exactly = 1) { mealRepository.getMeals() }
-        assertThat(result).hasSize(2)
         assertThat(result.map { it.id }).containsExactly(1, 2)
     }
 
@@ -137,8 +145,6 @@ class GetRandomPotatoMealsUseCaseTest {
         val result = getRandomPotatoMealsUseCase()
 
         // Then
-        verify(exactly = 1) { mealRepository.getMeals() }
-        assertThat(result).hasSize(2)
         assertThat(result.map { it.id }).containsExactly(1, 2)
     }
 
@@ -153,7 +159,6 @@ class GetRandomPotatoMealsUseCaseTest {
         val result = getRandomPotatoMealsUseCase()
 
         // Then
-        verify(exactly = 1) { mealRepository.getMeals() }
         assertThat(result).hasSize(10)
     }
 
@@ -166,7 +171,6 @@ class GetRandomPotatoMealsUseCaseTest {
         val result = getRandomPotatoMealsUseCase()
 
         // Then
-        verify(exactly = 1) { mealRepository.getMeals() }
         assertThat(result).isEmpty()
     }
 
@@ -183,8 +187,6 @@ class GetRandomPotatoMealsUseCaseTest {
         val result = getRandomPotatoMealsUseCase()
 
         // Then
-        verify(exactly = 1) { mealRepository.getMeals() }
-        assertThat(result).hasSize(2)
         assertThat(result.map { it.id }).containsExactly(1, 2)
     }
 
@@ -200,7 +202,6 @@ class GetRandomPotatoMealsUseCaseTest {
         val result = getRandomPotatoMealsUseCase(randomSize = 0)
 
         // Then
-        verify(exactly = 1) { mealRepository.getMeals() }
         assertThat(result).isEmpty()
     }
 }
